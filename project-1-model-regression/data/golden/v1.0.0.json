@@ -1,0 +1,563 @@
+{
+  "version": "1.0.0",
+  "created_at": "2026-07-07T12:00:00Z",
+  "cases": [
+    {
+      "id": "billing-001",
+      "input": "Hi,\n\nI just noticed I was charged $29.99 twice on July 3rd for my monthly plan. I only have one account. Can you refund the duplicate?\n\nThanks,\nMike",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer was double-charged for their monthly plan and wants a refund."
+      },
+      "expected_difficulty": "easy",
+      "notes": "Straightforward duplicate charge."
+    },
+    {
+      "id": "billing-002",
+      "input": "refund pls. order 9921. charged wrong card.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer wants a refund for order 9921 charged to the wrong card."
+      },
+      "expected_difficulty": "medium",
+      "notes": "Very short but clearly billing."
+    },
+    {
+      "id": "billing-003",
+      "input": "Hello support,\n\nMy invoice #INV-4401 shows a line item for \"Enterprise Add-on\" but I never signed up for that. I think this was added by mistake when I renewed last month.\n\nCan someone look into this and adjust my bill?\n\nBest,\nSarah Chen",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer disputes an Enterprise Add-on charge on their invoice."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "billing-004",
+      "input": "why am i still being charged?? i cancelled like 3 weeks ago",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer cancelled weeks ago but is still being charged."
+      },
+      "expected_difficulty": "medium",
+      "notes": "Cancellation could sound like account, but the pain point is the charge."
+    },
+    {
+      "id": "billing-005",
+      "input": "Dear Billing Team,\n\nWe are a non-profit (EIN on file) and were told we'd get the discounted rate. Our last receipt shows the full commercial price. Please correct this for our annual renewal.\n\nRegards,\nTom Whitfield\nOperations Director",
+      "expected": {
+        "category": "billing",
+        "summary": "Non-profit customer was charged commercial price instead of their discounted rate."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "billing-006",
+      "input": "got charged in euros but im in the uk??? exchange rate was awful. can i pay in gbp going forward",
+      "expected": {
+        "category": "billing",
+        "summary": "UK customer was charged in euros and wants to switch to GBP billing."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "billing-007",
+      "input": "I need a copy of all invoices from Jan 2024 to now for expense reports. Where do I download them?",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer needs historical invoices for expense reporting."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "billing-008",
+      "input": "My card expired and the payment failed. I updated it in settings but now it says I'm on a free trial?? I had a paid plan for 2 years.",
+      "expected": {
+        "category": "billing",
+        "summary": "Payment failed after card expiry and customer's paid plan was incorrectly downgraded."
+      },
+      "expected_difficulty": "hard",
+      "notes": "Touches account/billing boundary — labeled billing because core issue is failed payment and plan status."
+    },
+    {
+      "id": "billing-009",
+      "input": "tax exempt",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer wants tax-exempt billing applied to their account."
+      },
+      "expected_difficulty": "hard",
+      "notes": "Extremely short. Could be general but tax status is billing."
+    },
+    {
+      "id": "billing-010",
+      "input": "Hi there,\n\nOur company credit card was compromised and we had to cancel it. Can you send me a payment link for the outstanding balance on account #CC-8820 before our service gets suspended?\n\nThanks,\nJen",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer needs a payment link to settle an outstanding balance after their card was cancelled."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "billing-011",
+      "input": "I upgraded to annual on Tuesday and got charged for both the monthly AND annual plan in the same week. That can't be right.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer was charged for both monthly and annual plans after upgrading."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "billing-012",
+      "input": "Bonjour, je voudrais un remboursement pour le mois de juin. J'ai été facturé deux fois.\n\nMerci",
+      "expected": {
+        "category": "billing",
+        "summary": "French-speaking customer requests a refund for being double-billed in June."
+      },
+      "expected_difficulty": "medium",
+      "notes": "Mixed language edge case."
+    },
+    {
+      "id": "billing-013",
+      "input": "love that you auto-renewed me without emailing first. real classy. just reverse the charge.",
+      "expected": {
+        "category": "billing",
+        "summary": "Sarcastic customer wants their auto-renewal charge reversed."
+      },
+      "expected_difficulty": "medium",
+      "notes": "Sarcasm shouldn't change category."
+    },
+    {
+      "id": "billing-014",
+      "input": "We're a team of 8 but got invoiced for 15 seats. Pretty sure someone messed up the seat count when we removed people last month.",
+      "expected": {
+        "category": "billing",
+        "summary": "Customer was overcharged for 15 seats instead of their actual team of 8."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-001",
+      "input": "Every time I click Export PDF the whole app freezes and I have to force quit. MacOS Sonoma, M1 MacBook Pro. Happens on every project.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer's Mac app freezes when exporting PDFs."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-002",
+      "input": "api keeps returning 500 on POST /v2/events since yesterday. our integration is down. incident on your end?",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer's API integration is failing with 500 errors on POST /v2/events."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-003",
+      "input": "the mobile app wont sync. shows old data from last week even after i pull to refresh like 10 times",
+      "expected": {
+        "category": "technical",
+        "summary": "Mobile app is not syncing and shows stale data."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-004",
+      "input": "Hi,\n\nAfter the update to version 4.2, the dark mode toggle doesn't do anything. Light mode stuck on. Tried reinstalling.\n\nWindows 11, Chrome latest.\n\nCheers,\nDev",
+      "expected": {
+        "category": "technical",
+        "summary": "Dark mode toggle stopped working after the v4.2 update."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-005",
+      "input": "SSO login broken?? okta redirect goes to blank page. worked fine monday.",
+      "expected": {
+        "category": "technical",
+        "summary": "SSO login via Okta redirects to a blank page."
+      },
+      "expected_difficulty": "medium",
+      "notes": "Login issue but root cause is SSO integration bug, not password reset."
+    },
+    {
+      "id": "technical-006",
+      "input": "I keep getting \"Error code: SYNC_TIMEOUT\" when uploading files larger than 50MB. Smaller files work fine. Is there a limit?",
+      "expected": {
+        "category": "technical",
+        "summary": "Large file uploads fail with SYNC_TIMEOUT error."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-007",
+      "input": "dashboard loads forever. blank white screen. cleared cache, diff browser, same thing.",
+      "expected": {
+        "category": "technical",
+        "summary": "Dashboard shows a blank white screen and never loads."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-008",
+      "input": "notifications not working on iphone. i enabled them in settings and in ios but nothing comes through",
+      "expected": {
+        "category": "technical",
+        "summary": "Push notifications are not working on the customer's iPhone."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-009",
+      "input": "when i share a link the preview image is wrong — shows last year's branding not the new logo we uploaded",
+      "expected": {
+        "category": "technical",
+        "summary": "Shared link previews show outdated branding instead of the new logo."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "technical-010",
+      "input": "Is the site down? getting ERR_CONNECTION_REFUSED since 9am EST. whole team affected.",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer cannot connect to the site — possible outage."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "technical-011",
+      "input": "csv import fails halfway through with no error message. 2000 rows, dies around row 800 every time",
+      "expected": {
+        "category": "technical",
+        "summary": "CSV import consistently fails around row 800 with no error message."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "technical-012",
+      "input": "lol sure glad i pay for priority support while the search bar has been broken for a week 🙃",
+      "expected": {
+        "category": "technical",
+        "summary": "Sarcastic customer reports the search bar has been broken for a week."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "technical-013",
+      "input": "El informe no carga. I click Generate Report and it spins for 5 min then nothing. tried diff projects same issue",
+      "expected": {
+        "category": "technical",
+        "summary": "Report generation hangs and never completes."
+      },
+      "expected_difficulty": "medium",
+      "notes": "Mixed Spanish/English."
+    },
+    {
+      "id": "technical-014",
+      "input": "webhook deliveries show success in your dashboard but we never receive the payload on our server. using ngrok for dev.",
+      "expected": {
+        "category": "technical",
+        "summary": "Webhooks show as delivered but the customer's server never receives them."
+      },
+      "expected_difficulty": "hard"
+    },
+    {
+      "id": "technical-015",
+      "input": "broken",
+      "expected": {
+        "category": "technical",
+        "summary": "Customer reports something is broken with no details."
+      },
+      "expected_difficulty": "hard",
+      "notes": "Ambiguous one-word email. Labeled technical as default for bug reports but could be general."
+    },
+    {
+      "id": "account-001",
+      "input": "I forgot my password and the reset email never shows up. Checked spam. My email is james.rivera@gmail.com",
+      "expected": {
+        "category": "account",
+        "summary": "Customer cannot reset password because reset emails are not arriving."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "account-002",
+      "input": "need to change the email on my account from oldjob@company.com to personal@gmail.com. how do i do that",
+      "expected": {
+        "category": "account",
+        "summary": "Customer wants to change the email address on their account."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "account-003",
+      "input": "Hi,\n\nI'm leaving the company and need to transfer ownership of our workspace to my colleague Anna (anna.k@firm.com). What's the process?\n\nThanks,\nRobert",
+      "expected": {
+        "category": "account",
+        "summary": "Customer needs to transfer workspace ownership to a colleague."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "account-004",
+      "input": "locked out. too many wrong passwords i think. can you unlock? not asking for reset just unlock pls",
+      "expected": {
+        "category": "account",
+        "summary": "Customer is locked out after too many failed login attempts."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "account-005",
+      "input": "I signed up with Google but want to switch to email/password login. Is that possible?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer wants to switch from Google sign-in to email/password."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "account-006",
+      "input": "delete my account and all my data. GDPR request. email me confirmation when done.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer requests full account and data deletion under GDPR."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "account-007",
+      "input": "my 2fa app broke when i got a new phone. backup codes dont work either. help me get back in",
+      "expected": {
+        "category": "account",
+        "summary": "Customer lost access to 2FA after getting a new phone."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "account-008",
+      "input": "can i downgrade from pro to basic? dont need the extra features anymore",
+      "expected": {
+        "category": "account",
+        "summary": "Customer wants to downgrade from Pro to Basic plan."
+      },
+      "expected_difficulty": "hard",
+      "notes": "Plan change could be billing — labeled account because it's a subscription tier change request."
+    },
+    {
+      "id": "account-009",
+      "input": "wrong name on profile — says John Smith but i'm Jane Smith. where do i fix that",
+      "expected": {
+        "category": "account",
+        "summary": "Customer needs to correct the name on their profile."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "account-010",
+      "input": "invited my teammate but she says the invite link expired. can you resend or give me a new one",
+      "expected": {
+        "category": "account",
+        "summary": "Customer needs a new team invite link because the old one expired."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "account-011",
+      "input": "I have two accounts somehow — one with my work email and one with personal. Can you merge them?",
+      "expected": {
+        "category": "account",
+        "summary": "Customer has duplicate accounts and wants them merged."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "account-012",
+      "input": "Hola, no puedo iniciar sesión desde ayer. My password is correct but it says invalid credentials.",
+      "expected": {
+        "category": "account",
+        "summary": "Customer cannot log in despite using the correct password."
+      },
+      "expected_difficulty": "medium",
+      "notes": "Mixed language login issue."
+    },
+    {
+      "id": "account-013",
+      "input": "pls close acct",
+      "expected": {
+        "category": "account",
+        "summary": "Customer wants their account closed."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "account-014",
+      "input": "I'm the admin but I accidentally removed my own admin permissions. Now nobody can manage the team settings.",
+      "expected": {
+        "category": "account",
+        "summary": "Admin accidentally removed their own permissions and locked the team."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "account-015",
+      "input": "cancel",
+      "expected": {
+        "category": "account",
+        "summary": "Customer wants to cancel their account or subscription."
+      },
+      "expected_difficulty": "hard",
+      "notes": "One word — could be billing cancellation. Labeled account as cancellation intent."
+    },
+    {
+      "id": "general-001",
+      "input": "Hi,\n\nI'm a journalist writing about tools in your space. Would someone from your team be available for a 20-min interview next week?\n\nBest,\nLena Park\nTech Daily",
+      "expected": {
+        "category": "general",
+        "summary": "Journalist requesting an interview for an article."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-002",
+      "input": "do you offer student discounts?",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asking about student discount availability."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-003",
+      "input": "We're evaluating your product against two competitors for our 200-person org. Can you send over enterprise pricing and a security whitepaper?",
+      "expected": {
+        "category": "general",
+        "summary": "Prospect requesting enterprise pricing and security documentation."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-004",
+      "input": "just wanted to say the new update is really nice. especially the keyboard shortcuts. good job team",
+      "expected": {
+        "category": "general",
+        "summary": "Customer sending positive feedback about the recent update."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-005",
+      "input": "where is your office located? thinking of applying to a job i saw on your site",
+      "expected": {
+        "category": "general",
+        "summary": "Person asking about office location related to a job application."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-006",
+      "input": "hey is there a phone number i can call or is it email only",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asking if phone support is available."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-007",
+      "input": "I have a feature idea — would be great if the calendar could sync with Apple Reminders. Not a bug, just a suggestion.",
+      "expected": {
+        "category": "general",
+        "summary": "Customer suggesting Apple Reminders integration for the calendar."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-008",
+      "input": "your competitor offers X for half the price. convince me why i should stay",
+      "expected": {
+        "category": "general",
+        "summary": "Customer comparing pricing to a competitor and asking why they should stay."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "general-009",
+      "input": "????",
+      "expected": {
+        "category": "general",
+        "summary": "Unclear message with no actionable request."
+      },
+      "expected_difficulty": "hard",
+      "notes": "Extremely ambiguous."
+    },
+    {
+      "id": "general-010",
+      "input": "I'm not sure who to contact about this but we might want to partner on a co-marketing campaign. Who handles partnerships?",
+      "expected": {
+        "category": "general",
+        "summary": "Inquiry about co-marketing partnership contacts."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-011",
+      "input": "wondering if you support HIPAA compliance for healthcare customers. don't need a demo just a yes/no",
+      "expected": {
+        "category": "general",
+        "summary": "Customer asking whether the product supports HIPAA compliance."
+      },
+      "expected_difficulty": "easy"
+    },
+    {
+      "id": "general-012",
+      "input": "yeah no thanks",
+      "expected": {
+        "category": "general",
+        "summary": "Vague negative response with no clear request."
+      },
+      "expected_difficulty": "hard",
+      "notes": "Could be declining an offer or unsubscribing — too vague to classify elsewhere."
+    },
+    {
+      "id": "general-013",
+      "input": "Hi,\n\nI'm confused about what your product actually does. The website mentions analytics and automation — is it both? I run a small bakery and not sure if this is for me.\n\nThanks,\nPaul",
+      "expected": {
+        "category": "general",
+        "summary": "Prospect confused about what the product does and whether it fits their business."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "general-014",
+      "input": "sent this to the wrong company sorry ignore",
+      "expected": {
+        "category": "general",
+        "summary": "Customer sent the email to the wrong company by mistake."
+      },
+      "expected_difficulty": "medium"
+    },
+    {
+      "id": "general-015",
+      "input": "Magnífico producto, gracias por todo. No necesito ayuda, solo quería felicitarlos.",
+      "expected": {
+        "category": "general",
+        "summary": "Spanish-speaking customer sending praise with no support request."
+      },
+      "expected_difficulty": "medium",
+      "notes": "Foreign language praise, not a support ticket."
+    },
+    {
+      "id": "general-016",
+      "input": "ok",
+      "expected": {
+        "category": "general",
+        "summary": "One-word acknowledgment with no support request."
+      },
+      "expected_difficulty": "hard",
+      "notes": "Minimal input edge case."
+    }
+  ]
+}

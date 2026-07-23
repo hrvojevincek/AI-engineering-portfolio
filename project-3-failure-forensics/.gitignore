@@ -1,0 +1,2 @@
+# Project-local extras (root .gitignore covers secrets, venvs, DBs, caches)
+data/traces/

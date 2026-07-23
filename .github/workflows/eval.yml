@@ -1,0 +1,104 @@
+name: Model Eval (Project 1)
+
+on:
+  pull_request:
+    paths:
+      - "project-1-model-regression/prompts/**"
+  push:
+    branches: [main]
+    paths:
+      - "project-1-model-regression/prompts/**"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+defaults:
+  run:
+    working-directory: project-1-model-regression
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore baseline eval database
+        uses: actions/cache/restore@v4
+        with:
+          path: project-1-model-regression/data/eval.db
+          key: eval-db-main
+
+      - name: Detect prompt version
+        id: prompt
+        run: |
+          BASE="${{ github.event.pull_request.base.ref || 'main' }}"
+          VERSION=$(python scripts/detect_prompt_version.py "$BASE")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Evaluating prompt v$VERSION"
+
+      - name: Run eval
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python -m src.eval.runner \
+            --prompt "${{ steps.prompt.outputs.version }}" \
+            --report-dir reports \
+            --write-pr-comment
+
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-report
+          path: project-1-model-regression/reports/
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = 'project-1-model-regression/reports/pr_comment.md';
+            if (!fs.existsSync(path)) {
+              core.warning('No PR comment file — eval may have failed before report step.');
+              return;
+            }
+            const body = fs.readFileSync(path, 'utf8');
+            const marker = '<!-- model-eval-bot -->';
+            const fullBody = marker + '\n' + body;
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner, repo, issue_number,
+            });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner, repo, comment_id: existing.id, body: fullBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner, repo, issue_number, body: fullBody,
+              });
+            }
+
+      - name: Save baseline eval database
+        if: github.ref == 'refs/heads/main' && success()
+        uses: actions/cache/save@v4
+        with:
+          path: project-1-model-regression/data/eval.db
+          key: eval-db-main

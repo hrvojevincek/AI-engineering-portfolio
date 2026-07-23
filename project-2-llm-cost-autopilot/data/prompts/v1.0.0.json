@@ -1,0 +1,2602 @@
+[
+  {
+    "id": "t1-001",
+    "prompt": "Extract the email address: Contact jane@acme.com about billing.",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": "baseline 0"
+  },
+  {
+    "id": "t1-002",
+    "prompt": "Rewrite in lowercase: HELLO WORLD",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": "baseline 1"
+  },
+  {
+    "id": "t1-003",
+    "prompt": "What is 17 + 25? Answer with the number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": "baseline 2"
+  },
+  {
+    "id": "t1-004",
+    "prompt": "Given: 'Order #4421 was refunded yesterday.' Answer: was it refunded? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": "baseline 8"
+  },
+  {
+    "id": "t1-005",
+    "prompt": "Extract the date: Meeting on 2026-03-15 at noon.",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-006",
+    "prompt": "Convert to uppercase: soft launch",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-007",
+    "prompt": "What is 9 * 8? Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-008",
+    "prompt": "From 'SKU-9921 is in stock', is it in stock? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-009",
+    "prompt": "Extract the phone number: Call +1-415-555-0199 for support.",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-010",
+    "prompt": "Trim whitespace and return only the city: '  Berlin  '",
+    "tier": 1,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-011",
+    "prompt": "Is 100 divisible by 4? Answer yes or no.",
+    "tier": 1,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-012",
+    "prompt": "Parse the domain from https://docs.example.com/path",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-013",
+    "prompt": "Replace commas with spaces: apples,oranges,pears",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-014",
+    "prompt": "How many words are in: 'one two three four'?",
+    "tier": 1,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-015",
+    "prompt": "Given 'status=failed', did it succeed? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-016",
+    "prompt": "Extract currency amount: Total due USD 49.99 today.",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-017",
+    "prompt": "Title-case this: the quick brown fox",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-018",
+    "prompt": "What day is index 0 if days=['Mon','Tue','Wed']? Name only.",
+    "tier": 1,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-019",
+    "prompt": "Strip the file extension: report.final.v2.pdf",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-020",
+    "prompt": "Is 'alpha' before 'beta' alphabetically? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-021",
+    "prompt": "Extract the ZIP: Ship to 94107 San Francisco.",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-022",
+    "prompt": "Count characters (no spaces) in: 'hello'",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-023",
+    "prompt": "Normalize to ISO date: March 5, 2026",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-024",
+    "prompt": "From 'error_code=404', return the code number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-025",
+    "prompt": "Boolean: does 'cat' appear in 'concatenate'? true/false",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-026",
+    "prompt": "Split on '|': red|green|blue \u2014 return the second color.",
+    "tier": 1,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-027",
+    "prompt": "Celsius to Fahrenheit: 0\u00b0C. Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-028",
+    "prompt": "Extract username from email: alex.kim@corp.io",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-029",
+    "prompt": "Is 47 prime? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 4,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-030",
+    "prompt": "Quote the verb in: 'She quietly left.'",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-031",
+    "prompt": "Remove digits: order42ticket7 \u2192 letters only.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-032",
+    "prompt": "Length of list [a,b,c,d]? Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-033",
+    "prompt": "Does the JSON {\"ok\":true} have key ok? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-034",
+    "prompt": "First letter of 'Kubernetes'.",
+    "tier": 1,
+    "features": {
+      "token_count": 4,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-035",
+    "prompt": "Round 3.14159 to 2 decimals. Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-036",
+    "prompt": "Extract IPv4: Server at 192.168.1.10 timed out.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-037",
+    "prompt": "Pluralize: 'box' \u2192 one word.",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-038",
+    "prompt": "Seconds in 3 minutes? Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-039",
+    "prompt": "Is empty string '' truthy in Python? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-040",
+    "prompt": "Get path basename: /var/log/app/error.log",
+    "tier": 1,
+    "features": {
+      "token_count": 4,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-041",
+    "prompt": "Hex for decimal 255. No 0x prefix.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-042",
+    "prompt": "Which is larger: 0.1 or 0.01? Return the number.",
+    "tier": 1,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-043",
+    "prompt": "Extract hashtag: Love this #launchday vibe.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-044",
+    "prompt": "Snake_case to words: user_account_id",
+    "tier": 1,
+    "features": {
+      "token_count": 4,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-045",
+    "prompt": "Did 'DONE' appear in 'build DONE at 09:00'? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-046",
+    "prompt": "Sort ascending: 3,1,2 \u2014 comma-separated.",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-047",
+    "prompt": "Min of {12, 4, 9}. Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-048",
+    "prompt": "HTTP status for Not Found? Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-049",
+    "prompt": "Extract ISO language tag: Accept-Language: en-US,en;q=0.9",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-050",
+    "prompt": "Capitalize only the first letter: hello world",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-051",
+    "prompt": "Is leap year 2024? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-052",
+    "prompt": "Substring before '@' in admin@localhost",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-053",
+    "prompt": "Echo back exactly: PING",
+    "tier": 1,
+    "features": {
+      "token_count": 4,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-054",
+    "prompt": "Number of vowels in 'queue'.",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-055",
+    "prompt": "Convert 1h30m to minutes. Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-056",
+    "prompt": "Extract ticket id: Ticket INC-2048 opened.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-057",
+    "prompt": "True or false: [] is empty.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-058",
+    "prompt": "Last item of 'a,b,c,d' when split by comma.",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-059",
+    "prompt": "GCD of 12 and 18. Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-060",
+    "prompt": "Does 'https' start with 'http'? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-061",
+    "prompt": "Pad '7' to 3 digits with zeros.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-062",
+    "prompt": "Extract country code: +44 20 7946 0958",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-063",
+    "prompt": "Words starting with 's' in: 'sun sea sand rock'",
+    "tier": 1,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-064",
+    "prompt": "Is 2**10 equal to 1024? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-065",
+    "prompt": "Return only the JSON key names from {\"a\":1,\"b\":2}",
+    "tier": 1,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-066",
+    "prompt": "Middle character of 'abcde'.",
+    "tier": 1,
+    "features": {
+      "token_count": 4,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-067",
+    "prompt": "Floor of 9.8. Number only.",
+    "tier": 1,
+    "features": {
+      "token_count": 5,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-068",
+    "prompt": "Extract PR number: Merged #531 successfully.",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-069",
+    "prompt": "Lowercase and trim: '  MoNDay  '",
+    "tier": 1,
+    "features": {
+      "token_count": 6,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t1-070",
+    "prompt": "Is 'NaN' a number type name? yes/no.",
+    "tier": 1,
+    "features": {
+      "token_count": 7,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-001",
+    "prompt": "Classify sentiment as positive/negative/neutral: 'This product is okay.'",
+    "tier": 2,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": "baseline 3"
+  },
+  {
+    "id": "t2-002",
+    "prompt": "Summarize in one sentence: The team shipped v2 on Monday after fixing three bugs in checkout.",
+    "tier": 2,
+    "features": {
+      "token_count": 16,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": "baseline 4"
+  },
+  {
+    "id": "t2-003",
+    "prompt": "Write a polite rejection email for a late job application. Keep it under 80 words.",
+    "tier": 2,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": "baseline 7"
+  },
+  {
+    "id": "t2-004",
+    "prompt": "Explain recursion to a beginner in 3 sentences.",
+    "tier": 2,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": "baseline 9"
+  },
+  {
+    "id": "t2-005",
+    "prompt": "Classify this support ticket as billing|technical|account: 'I was charged twice for March.'",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-006",
+    "prompt": "Summarize the changelog in 2 bullets: Added SSO, fixed CSV export crash, improved dark mode.",
+    "tier": 2,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-007",
+    "prompt": "Rewrite this error message to be user-friendly: 'NullPointerException at UserService:42'",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-008",
+    "prompt": "Turn these notes into a standup update (3 short bullets): blocked on API key; finished UI polish; starting load tests.",
+    "tier": 2,
+    "features": {
+      "token_count": 20,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-009",
+    "prompt": "Write a one-paragraph product blurb for a CLI that diffs two JSON files.",
+    "tier": 2,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-010",
+    "prompt": "Classify priority P1/P2/P3: 'Homepage is down for all users in EU.'",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-011",
+    "prompt": "Extract action items as a bullet list: Alice will send the deck; Bob books the room; we revisit Friday.",
+    "tier": 2,
+    "features": {
+      "token_count": 19,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-012",
+    "prompt": "Paraphrase for a non-technical manager: 'We need to shard the write-heavy table.'",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-013",
+    "prompt": "Draft a 4-line commit message for renaming AuthService to IdentityService.",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-014",
+    "prompt": "Categorize the query intent: informational|transactional|navigational \u2014 'buy noise cancelling headphones'",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-015",
+    "prompt": "Summarize this log snippet in one sentence: 5x timeout to payments-api, then 200 after retry.",
+    "tier": 2,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-016",
+    "prompt": "Write acceptance criteria (3 bullets) for a 'forgot password' feature.",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-017",
+    "prompt": "Convert this rant into a calm bug report title + 2 sentences: 'The export button does NOTHING and I wasted an hour.'",
+    "tier": 2,
+    "features": {
+      "token_count": 22,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-018",
+    "prompt": "Label each sentence toxic/ok: (1) Great job team. (2) You're an idiot.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-019",
+    "prompt": "Produce a FAQ answer (under 60 words): How do I rotate API keys?",
+    "tier": 2,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-020",
+    "prompt": "Outline a 5-step checklist to onboard a new engineer to this repo.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-021",
+    "prompt": "Rewrite in active voice: 'The deployment was approved by the release manager.'",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-022",
+    "prompt": "Classify email urgency high/medium/low: 'FYI \u2014 updated the style guide for next quarter.'",
+    "tier": 2,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-023",
+    "prompt": "Make a short README 'Quick start' section for a Python package with a .venv.",
+    "tier": 2,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-024",
+    "prompt": "Summarize customer feedback themes (max 3): slow UI, missing dark mode, love the keyboard shortcuts.",
+    "tier": 2,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-025",
+    "prompt": "Write a polite Slack message asking for a review on PR #88 by EOD.",
+    "tier": 2,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-026",
+    "prompt": "Map each symptom to likely layer (frontend|backend|db): blank page; 500 on /api/me; slow SELECT.",
+    "tier": 2,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-027",
+    "prompt": "Create a 3-bullet release note for adding rate limiting.",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-028",
+    "prompt": "Classify form field type text|email|password|number for labels: Email, Age, Password, Bio.",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-029",
+    "prompt": "Explain HTTP 429 to a junior engineer in 2 sentences.",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-030",
+    "prompt": "Turn CSV header into a markdown table header: name,role,team",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-031",
+    "prompt": "Write a user-facing toast: payment succeeded, receipt emailed.",
+    "tier": 2,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-032",
+    "prompt": "Summarize differences in one sentence: v1 used polling; v2 uses webhooks.",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-033",
+    "prompt": "Draft interview screening questions (4) for a backend role focused on APIs.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-034",
+    "prompt": "Label each task chore|bug|feature: fix typo; add export CSV; clean dead code.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-035",
+    "prompt": "Rewrite jargon: 'We dogfooded the MVP and got signal.' \u2192 plain English.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-036",
+    "prompt": "Produce a short risk note (3 bullets) for enabling a new feature flag at 10%.",
+    "tier": 2,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-037",
+    "prompt": "Classify doc type ADR|runbook|tutorial: 'How to restart the worker pods in prod.'",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-038",
+    "prompt": "Write a 2-sentence apology email for a 20-minute API outage.",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-039",
+    "prompt": "Extract entities (person, org, date) from: 'Maya from Stripe meets us on July 4.'",
+    "tier": 2,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-040",
+    "prompt": "Suggest 3 better variable names for tmp, data2, x.",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-041",
+    "prompt": "Compress this paragraph to <=25 words: Our billing service retries failed charges with exponential backoff and alerts on-call after three failures.",
+    "tier": 2,
+    "features": {
+      "token_count": 21,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-042",
+    "prompt": "Write pytest test case names (3) for a password reset token expiry function.",
+    "tier": 2,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-043",
+    "prompt": "Classify log level info|warn|error: 'Disk usage at 92% on db-primary.'",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-044",
+    "prompt": "Make a short glossary entry for 'idempotency key'.",
+    "tier": 2,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-045",
+    "prompt": "Convert bullet goals into a SMART objective (1 sentence): grow signups; improve onboarding.",
+    "tier": 2,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-046",
+    "prompt": "Tag each URL category docs|blog|app: https://api.example.com/v1 , https://example.com/blog/x , https://docs.example.com",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-047",
+    "prompt": "Write a migration warning banner text (1 sentence) for planned downtime Sunday 02:00 UTC.",
+    "tier": 2,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-048",
+    "prompt": "Summarize this A/B result for PMs: variant B +4% CTR, p=0.03, n=12k.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-049",
+    "prompt": "Draft a 3-bullet code review checklist for security-sensitive PRs.",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-050",
+    "prompt": "Classify the SQL as read|write: SELECT * FROM users WHERE id=1;",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-051",
+    "prompt": "Explain what a circuit breaker does in microservices \u2014 3 sentences max.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-052",
+    "prompt": "Rewrite for inclusive language: 'Hey guys, sync with the webmaster.'",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-053",
+    "prompt": "Produce a JSON example with keys name and age for a fictional user.",
+    "tier": 2,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-054",
+    "prompt": "Summarize open questions from: Need SSO? Which IdP? Budget for Okta?",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-055",
+    "prompt": "Write a short alt text for an image of a dashboard showing cost charts.",
+    "tier": 2,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-056",
+    "prompt": "Categorize CI failure type flaky|real|infra: only fails on Friday nights in CI.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-057",
+    "prompt": "Create a 4-item definition of done for an API endpoint PR.",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-058",
+    "prompt": "Paraphrase this SLA: 99.9% monthly uptime excluding planned maintenance.",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-059",
+    "prompt": "Label privacy sensitivity public|internal|secret: customer SSNs in a CSV.",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-060",
+    "prompt": "Write a helpful empty-state message for 'No search results'.",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-061",
+    "prompt": "Turn requirements into user stories (2): login with Google; remember device.",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-062",
+    "prompt": "Classify metric type leading|lagging: weekly active users; sales closed this quarter.",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-063",
+    "prompt": "Explain JWT vs session cookie tradeoff in 4 bullet points.",
+    "tier": 2,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-064",
+    "prompt": "Draft a postmortem title + blameless summary sentence for a bad config push.",
+    "tier": 2,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-065",
+    "prompt": "Summarize this stack overflow-style question into a clearer title: why does my docker container exit 137?",
+    "tier": 2,
+    "features": {
+      "token_count": 16,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-066",
+    "prompt": "Write sample curl for GET /health returning JSON status.",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-067",
+    "prompt": "Classify change risk low|medium|high: renaming a public API field.",
+    "tier": 2,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "low"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-068",
+    "prompt": "Make a 3-bullet onboarding email for a new customer after signup.",
+    "tier": 2,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-069",
+    "prompt": "Extract assumptions from: We'll use Redis because latency must stay under 5ms.",
+    "tier": 2,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t2-070",
+    "prompt": "Rewrite this to be more concise without losing meaning: In order to be able to deploy faster, we should automate the release process as much as possible.",
+    "tier": 2,
+    "features": {
+      "token_count": 27,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": true,
+      "output_format_complexity": "medium"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-001",
+    "prompt": "List three bullet points of risks for migrating a monolith to microservices.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 1,
+      "has_context": false,
+      "output_format_complexity": "medium"
+    },
+    "notes": "baseline 5"
+  },
+  {
+    "id": "t3-002",
+    "prompt": "Compare PostgreSQL vs SQLite for a small internal tool. Two short paragraphs.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": "baseline 6"
+  },
+  {
+    "id": "t3-003",
+    "prompt": "Analyze tradeoffs between server-side rendering and a SPA for an admin console. Include SEO and caching.",
+    "tier": 3,
+    "features": {
+      "token_count": 16,
+      "has_analyze_verb": true,
+      "num_constraints": 3,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-004",
+    "prompt": "Design a rate-limiting strategy for a multi-tenant API. Cover fairness, burst traffic, and abuse. Outline in sections.",
+    "tier": 3,
+    "features": {
+      "token_count": 17,
+      "has_analyze_verb": false,
+      "num_constraints": 3,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-005",
+    "prompt": "Compare Redis vs Memcached for session storage at ~50k QPS. Recommend one with justification.",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-006",
+    "prompt": "Evaluate whether to build vs buy an auth system for a B2B SaaS with SSO. List criteria and a recommendation.",
+    "tier": 3,
+    "features": {
+      "token_count": 20,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-007",
+    "prompt": "Propose a migration plan from REST to GraphQL without downtime. Include rollback.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-008",
+    "prompt": "Critique this schema: users(id, email, roles_csv). Suggest a normalized alternative and why.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": true,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-009",
+    "prompt": "Compare at-least-once vs exactly-once delivery for a payments webhook consumer. What should we implement?",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-010",
+    "prompt": "Analyze cost vs latency tradeoffs of always calling GPT-4o versus routing simple tasks to mini.",
+    "tier": 3,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-011",
+    "prompt": "Design an observability plan (metrics, logs, traces) for a FastAPI LLM gateway. Prioritize the top 5 signals.",
+    "tier": 3,
+    "features": {
+      "token_count": 17,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-012",
+    "prompt": "Compare Blue/Green vs canary deploys for a stateful worker fleet. Recommend for our constraints: low ops staff.",
+    "tier": 3,
+    "features": {
+      "token_count": 17,
+      "has_analyze_verb": true,
+      "num_constraints": 3,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-013",
+    "prompt": "Assess risks of storing prompt logs that may contain PII. Propose mitigations and a retention policy.",
+    "tier": 3,
+    "features": {
+      "token_count": 16,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-014",
+    "prompt": "Argue for or against micro-frontends for a 6-person team. Give a clear verdict.",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-015",
+    "prompt": "Design a backfill job for 200M rows without locking production. Steps + failure modes.",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-016",
+    "prompt": "Compare Postgres RLS vs app-layer authz for multi-tenant SaaS. When is RLS worth it?",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-017",
+    "prompt": "Evaluate embedding model choices for semantic cache: quality, cost, dimensionality. Pick one for V1.",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-018",
+    "prompt": "Propose a testing strategy for nondeterministic LLM features. Include evals and flaky-test policy.",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-019",
+    "prompt": "Analyze CAP tradeoffs for a global feature-flag service. Choose a consistency model and defend it.",
+    "tier": 3,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-020",
+    "prompt": "Compare Kafka vs SQS for async LLM verification jobs. Include ops complexity for a small team.",
+    "tier": 3,
+    "features": {
+      "token_count": 16,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-021",
+    "prompt": "Design a human-in-the-loop escalation path for low-confidence model outputs. Sequence diagram in text.",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-022",
+    "prompt": "Critique using a single shared DB for billing and product data. Propose a safer boundary.",
+    "tier": 3,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-023",
+    "prompt": "Compare synchronous tool-calling agents vs DAG workflows for multi-step research tasks.",
+    "tier": 3,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-024",
+    "prompt": "Assess whether to fine-tune or RAG for internal policy Q&A. Decision framework + recommendation.",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-025",
+    "prompt": "Design a cost budget system per team for LLM spend with soft and hard limits.",
+    "tier": 3,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-026",
+    "prompt": "Evaluate eventual consistency in inventory after checkout. Failure scenarios and user messaging.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-027",
+    "prompt": "Compare OpenTelemetry vs proprietary APM for a Python monorepo. Criteria-weighted recommendation.",
+    "tier": 3,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-028",
+    "prompt": "Propose a data model for versioned prompts with A/B assignments and audit history.",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-029",
+    "prompt": "Analyze security threats for an LLM gateway that proxies API keys. Threat model + controls.",
+    "tier": 3,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-030",
+    "prompt": "Compare columnar vs row storage for LLM request analytics at 1B events/month.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-031",
+    "prompt": "Design graceful degradation when the primary LLM provider is down. Include UX and fallbacks.",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-032",
+    "prompt": "Evaluate feature stores vs ad-hoc SQL for ML routing features. Team of 2 MLEs.",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-033",
+    "prompt": "Critique 'store everything forever' logging. Propose tiers of retention by sensitivity.",
+    "tier": 3,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-034",
+    "prompt": "Compare Celery vs Dramatiq vs arq for Python background jobs in this project.",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-035",
+    "prompt": "Design an incident severity matrix for AI product outages (quality vs availability).",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-036",
+    "prompt": "Assess tradeoffs of streaming tokens to clients through your own gateway.",
+    "tier": 3,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-037",
+    "prompt": "Propose a rollout plan for a new classifier model with shadow mode then canary.",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-038",
+    "prompt": "Compare JSON mode vs tool/function calling for structured extraction reliability.",
+    "tier": 3,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-039",
+    "prompt": "Analyze vendor lock-in risks of using only one cloud LLM. Diversification strategy.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-040",
+    "prompt": "Design a feedback loop that turns production routing failures into training data weekly.",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-041",
+    "prompt": "Evaluate whether SQLite is enough for request audit logs at 10M rows/year.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-042",
+    "prompt": "Compare BM25+dense hybrid search vs dense-only for internal docs RAG.",
+    "tier": 3,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-043",
+    "prompt": "Propose SLOs for an LLM cost router: latency, error rate, quality agreement rate.",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-044",
+    "prompt": "Critique prompt-only security filters for jailbreaks. Better layered approach.",
+    "tier": 3,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-045",
+    "prompt": "Compare weekly batch retrain vs online learning for a complexity classifier.",
+    "tier": 3,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-046",
+    "prompt": "Design multi-region active-passive failover for the FastAPI router.",
+    "tier": 3,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-047",
+    "prompt": "Assess using LLM-as-judge vs human labels for routing quality. Bias and cost.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-048",
+    "prompt": "Propose an ADR: should model pricing live in YAML, DB, or code constants?",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-049",
+    "prompt": "Compare gRPC vs REST for internal provider adapters. Recommend for this codebase.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-050",
+    "prompt": "Analyze cold-start problems for a new tenant with no historical routing data.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-051",
+    "prompt": "Design a sandbox for executing model-generated code safely (if we add tools later).",
+    "tier": 3,
+    "features": {
+      "token_count": 13,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-052",
+    "prompt": "Evaluate PII redaction before vs after caching LLM responses.",
+    "tier": 3,
+    "features": {
+      "token_count": 9,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-053",
+    "prompt": "Compare deterministic rules + ML hybrid router vs pure ML classifier.",
+    "tier": 3,
+    "features": {
+      "token_count": 11,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-054",
+    "prompt": "Propose how to attribute cost savings to routing in a finance-friendly report.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-055",
+    "prompt": "Critique monolithic Streamlit dashboard vs separate Grafana for cost metrics.",
+    "tier": 3,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-056",
+    "prompt": "Design versioning for routing YAML so bad maps can be rolled back in <5 minutes.",
+    "tier": 3,
+    "features": {
+      "token_count": 15,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-057",
+    "prompt": "Assess legal/compliance concerns of training on customer prompts.",
+    "tier": 3,
+    "features": {
+      "token_count": 8,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-058",
+    "prompt": "Compare batch inference vs online for nightly quality verification jobs.",
+    "tier": 3,
+    "features": {
+      "token_count": 10,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-059",
+    "prompt": "Propose a capacity plan if traffic grows 10x in 6 months on the router.",
+    "tier": 3,
+    "features": {
+      "token_count": 14,
+      "has_analyze_verb": false,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  },
+  {
+    "id": "t3-060",
+    "prompt": "Analyze when local Ollama models are worth routing to despite quality risk.",
+    "tier": 3,
+    "features": {
+      "token_count": 12,
+      "has_analyze_verb": true,
+      "num_constraints": 2,
+      "has_context": false,
+      "output_format_complexity": "high"
+    },
+    "notes": ""
+  }
+]

@@ -1,0 +1,9 @@
+.venv
+__pycache__
+.git
+.env
+data/eval.db
+reports/
+*.md
+!README.md
+.vscode

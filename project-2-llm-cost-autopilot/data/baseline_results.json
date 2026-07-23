@@ -1,0 +1,202 @@
+[
+  {
+    "prompt_id": 0,
+    "prompt": "Extract the email address: Contact jane@acme.com about billing.",
+    "model_id": "gpt-4o",
+    "latency_ms": 2049.696375033818,
+    "input_tokens": 21,
+    "output_tokens": 10,
+    "cost": 0.00015250000000000002,
+    "text_preview": "The email address is: jane@acme.com"
+  },
+  {
+    "prompt_id": 0,
+    "prompt": "Extract the email address: Contact jane@acme.com about billing.",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 975.0412920257077,
+    "input_tokens": 21,
+    "output_tokens": 11,
+    "cost": 9.75e-06,
+    "text_preview": "The email address is: jane@acme.com."
+  },
+  {
+    "prompt_id": 1,
+    "prompt": "Rewrite in lowercase: HELLO WORLD",
+    "model_id": "gpt-4o",
+    "latency_ms": 542.6918750163168,
+    "input_tokens": 14,
+    "output_tokens": 2,
+    "cost": 5.500000000000001e-05,
+    "text_preview": "hello world"
+  },
+  {
+    "prompt_id": 1,
+    "prompt": "Rewrite in lowercase: HELLO WORLD",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 714.5100420457311,
+    "input_tokens": 14,
+    "output_tokens": 2,
+    "cost": 3.2999999999999997e-06,
+    "text_preview": "hello world"
+  },
+  {
+    "prompt_id": 2,
+    "prompt": "What is 17 + 25? Answer with the number only.",
+    "model_id": "gpt-4o",
+    "latency_ms": 1023.1549160089344,
+    "input_tokens": 21,
+    "output_tokens": 1,
+    "cost": 6.25e-05,
+    "text_preview": "42"
+  },
+  {
+    "prompt_id": 2,
+    "prompt": "What is 17 + 25? Answer with the number only.",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 616.6594579699449,
+    "input_tokens": 21,
+    "output_tokens": 1,
+    "cost": 3.7499999999999997e-06,
+    "text_preview": "42"
+  },
+  {
+    "prompt_id": 3,
+    "prompt": "Classify sentiment as positive/negative/neutral: 'This product is okay.'",
+    "model_id": "gpt-4o",
+    "latency_ms": 817.5245420425199,
+    "input_tokens": 23,
+    "output_tokens": 17,
+    "cost": 0.0002275,
+    "text_preview": "The sentiment of the statement \"This product is okay.\" can be classified as neutral."
+  },
+  {
+    "prompt_id": 3,
+    "prompt": "Classify sentiment as positive/negative/neutral: 'This product is okay.'",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 497.04774998826906,
+    "input_tokens": 23,
+    "output_tokens": 5,
+    "cost": 6.45e-06,
+    "text_preview": "The sentiment is neutral."
+  },
+  {
+    "prompt_id": 4,
+    "prompt": "Summarize in one sentence: The team shipped v2 on Monday after fixing three bugs in checkout.",
+    "model_id": "gpt-4o",
+    "latency_ms": 834.6910419641063,
+    "input_tokens": 28,
+    "output_tokens": 17,
+    "cost": 0.00024000000000000003,
+    "text_preview": "The team released version 2 on Monday after resolving three bugs in the checkout process."
+  },
+  {
+    "prompt_id": 4,
+    "prompt": "Summarize in one sentence: The team shipped v2 on Monday after fixing three bugs in checkout.",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 1027.21033396665,
+    "input_tokens": 28,
+    "output_tokens": 15,
+    "cost": 1.3199999999999999e-05,
+    "text_preview": "The team successfully launched version 2 on Monday after resolving three checkout bugs."
+  },
+  {
+    "prompt_id": 5,
+    "prompt": "List three bullet points of risks for migrating a monolith to microservices.",
+    "model_id": "gpt-4o",
+    "latency_ms": 2378.810667025391,
+    "input_tokens": 22,
+    "output_tokens": 261,
+    "cost": 0.0026650000000000003,
+    "text_preview": "Migrating a monolith to microservices can offer many benefits, but it also comes with several risks. Here are three key "
+  },
+  {
+    "prompt_id": 5,
+    "prompt": "List three bullet points of risks for migrating a monolith to microservices.",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 1810.5680419830605,
+    "input_tokens": 22,
+    "output_tokens": 132,
+    "cost": 8.25e-05,
+    "text_preview": "- **Increased Complexity**: Transitioning from a monolithic architecture to microservices introduces additional complexi"
+  },
+  {
+    "prompt_id": 6,
+    "prompt": "Compare PostgreSQL vs SQLite for a small internal tool. Two short paragraphs.",
+    "model_id": "gpt-4o",
+    "latency_ms": 4152.158916986082,
+    "input_tokens": 22,
+    "output_tokens": 227,
+    "cost": 0.0023250000000000002,
+    "text_preview": "When considering PostgreSQL for a small internal tool, it stands out for its robust feature set and scalability options,"
+  },
+  {
+    "prompt_id": 6,
+    "prompt": "Compare PostgreSQL vs SQLite for a small internal tool. Two short paragraphs.",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 2317.05495796632,
+    "input_tokens": 22,
+    "output_tokens": 195,
+    "cost": 0.0001203,
+    "text_preview": "When choosing between PostgreSQL and SQLite for a small internal tool, it's important to consider the use case and opera"
+  },
+  {
+    "prompt_id": 7,
+    "prompt": "Write a polite rejection email for a late job application. Keep it under 80 words.",
+    "model_id": "gpt-4o",
+    "latency_ms": 1138.1582909962162,
+    "input_tokens": 25,
+    "output_tokens": 79,
+    "cost": 0.0008525,
+    "text_preview": "Subject: Application Update\n\nDear [Applicant's Name],\n\nThank you for your interest in the [Job Title] position at [Compa"
+  },
+  {
+    "prompt_id": 7,
+    "prompt": "Write a polite rejection email for a late job application. Keep it under 80 words.",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 1467.1868750010617,
+    "input_tokens": 25,
+    "output_tokens": 99,
+    "cost": 6.315e-05,
+    "text_preview": "Subject: Job Application Update\n\nDear [Applicant's Name],\n\nThank you for your interest in the [Job Title] position at [C"
+  },
+  {
+    "prompt_id": 8,
+    "prompt": "Given: 'Order #4421 was refunded yesterday.' Answer: was it refunded? yes/no.",
+    "model_id": "gpt-4o",
+    "latency_ms": 544.797667011153,
+    "input_tokens": 27,
+    "output_tokens": 2,
+    "cost": 8.75e-05,
+    "text_preview": "Yes."
+  },
+  {
+    "prompt_id": 8,
+    "prompt": "Given: 'Order #4421 was refunded yesterday.' Answer: was it refunded? yes/no.",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 529.5634579961188,
+    "input_tokens": 27,
+    "output_tokens": 2,
+    "cost": 5.2500000000000006e-06,
+    "text_preview": "Yes."
+  },
+  {
+    "prompt_id": 9,
+    "prompt": "Explain recursion to a beginner in 3 sentences.",
+    "model_id": "gpt-4o",
+    "latency_ms": 1951.291458972264,
+    "input_tokens": 17,
+    "output_tokens": 72,
+    "cost": 0.0007625,
+    "text_preview": "Recursion is a programming technique where a function calls itself to solve a problem. It breaks the problem into smalle"
+  },
+  {
+    "prompt_id": 9,
+    "prompt": "Explain recursion to a beginner in 3 sentences.",
+    "model_id": "gpt-4o-mini",
+    "latency_ms": 1171.2397909723222,
+    "input_tokens": 17,
+    "output_tokens": 76,
+    "cost": 4.815e-05,
+    "text_preview": "Recursion is a programming technique where a function calls itself to solve a problem by breaking it down into smaller, "
+  }
+]
