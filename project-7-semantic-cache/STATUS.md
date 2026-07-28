@@ -5,12 +5,12 @@
 
 ## Snapshot
 
-| Field            | Value                                 |
-| ---------------- | ------------------------------------- |
-| **Phase**        | 0 — Scaffold                          |
-| **Next task**    | Phase 1.1 — Design cache key strategy |
-| **Blockers**     | None                                  |
-| **Last updated** | 2026-07-28                            |
+| Field            | Value                                |
+| ---------------- | ------------------------------------ |
+| **Phase**        | 1 — Cache Index                      |
+| **Next task**    | Phase 1.1 — Implement `namespace.py` |
+| **Blockers**     | None                                 |
+| **Last updated** | 2026-07-28                           |
 
 ## Phase Checklist
 
@@ -74,4 +74,4 @@ requirements.txt
 
 ## Session Notes
 
-Scaffold only. Start Phase 1.1 next.
+Phase 1 started. Stubs in `src/cache/namespace.py` + `src/models/types.py`. Implement 1.1, run pytest.
