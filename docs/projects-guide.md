@@ -39,4 +39,4 @@ For full phase-by-phase detail on any project, read the PDF in chunks (it's ~82 
 | 1 | `project-1-model-regression/` | Complete (Phases 1–5) |
 | 2 | `project-2-llm-cost-autopilot/` | Complete (Phases 1–5 local) |
 | 3 | `project-3-failure-forensics/` | Scaffolded (Phase 0) |
-| — | project 4 slot in README | Not yet chosen |
+| 7 | `project-7-semantic-cache/` | Scaffolded (Phase 0) |

@@ -13,11 +13,12 @@ Projects are built from `AI Engineering Projects Guide.pdf` (15 project blueprin
 
 ## Project Index
 
-| Folder                           | Read first                                |
-| -------------------------------- | ----------------------------------------- |
-| `project-1-model-regression/`    | `project-1-model-regression/STATUS.md`    |
-| `project-2-llm-cost-autopilot/`  | `project-2-llm-cost-autopilot/STATUS.md`  |
-| `project-3-failure-forensics/`   | `project-3-failure-forensics/STATUS.md`   |
+| Folder                          | Read first                               |
+| ------------------------------- | ---------------------------------------- |
+| `project-1-model-regression/`   | `project-1-model-regression/STATUS.md`   |
+| `project-2-llm-cost-autopilot/` | `project-2-llm-cost-autopilot/STATUS.md` |
+| `project-3-failure-forensics/`  | `project-3-failure-forensics/STATUS.md`  |
+| `project-7-semantic-cache/`     | `project-7-semantic-cache/STATUS.md`     |
 
 ## Token-Saving Rules
 

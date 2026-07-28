@@ -9,7 +9,7 @@ Monorepo for interview/portfolio AI engineering projects. Each project lives in 
 | 1 | [`project-1-model-regression/`](project-1-model-regression/) | **Complete** (Phases 1–5) | CI/CD pipeline that tests LLM prompt changes against a golden dataset and blocks regressions |
 | 2 | [`project-2-llm-cost-autopilot/`](project-2-llm-cost-autopilot/) | Complete (Phases 1–5) | Routes each request to the cheapest capable model; async quality verify + escalation |
 | 3 | [`project-3-failure-forensics/`](project-3-failure-forensics/) | Scaffolded (Phase 0) | Trace multi-step AI pipelines, root-cause bad outputs, feed failures into evals |
-| 4 | `project-4/` | Planned | _TBD_ |
+| 7 | [`project-7-semantic-cache/`](project-7-semantic-cache/) | Scaffolded (Phase 0) | Drop-in LLM API proxy with semantic cache — cut cost and latency |
 
 ## Working on a project
 
@@ -29,7 +29,7 @@ See each project's `README.md` for full setup and `STATUS.md` for build progress
 project-1-model-regression/
 project-2-llm-cost-autopilot/
 project-3-failure-forensics/
-project-4/                  ← create when ready
+project-7-semantic-cache/
 ```
 
 ## Adding a new project
