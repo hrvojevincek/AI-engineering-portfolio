@@ -7,6 +7,32 @@ import io
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
+FILLER_WORDS = {
+    "a",
+    "an",
+    "the",
+    "please",
+    "could",
+    "would",
+    "you",
+    "tell",
+    "me",
+    "about",
+    "just",
+    "kind",
+    "of",
+    "to",
+    "for",
+    "can",
+}
+
+
+def suggest_normalization(query_text: str) -> str:
+    """Strip filler words so near-misses can be compared as tighter embeddings."""
+    tokens = [token.strip("?.!,;:").lower() for token in query_text.split()]
+    kept = [token for token in tokens if token and token not in FILLER_WORDS]
+    return " ".join(kept) or query_text.lower().strip()
+
 
 @dataclass(frozen=True)
 class NearMiss:
@@ -20,6 +46,10 @@ class NearMiss:
     @property
     def gap(self) -> float:
         return round(self.threshold - self.best_similarity, 4)
+
+    @property
+    def normalization_suggestion(self) -> str:
+        return suggest_normalization(self.query_text)
 
 
 @dataclass
@@ -61,6 +91,7 @@ class NearMissLog:
                 "threshold": item.threshold,
                 "gap": item.gap,
                 "matched_prompt_text": item.matched_prompt_text,
+                "normalization_suggestion": item.normalization_suggestion,
                 "timestamp": item.timestamp.isoformat(),
             }
             for item in self._entries
@@ -78,6 +109,7 @@ class NearMissLog:
                 "threshold",
                 "gap",
                 "matched_prompt_text",
+                "normalization_suggestion",
             ],
         )
         writer.writeheader()
@@ -91,6 +123,7 @@ class NearMissLog:
                     "threshold": item.threshold,
                     "gap": item.gap,
                     "matched_prompt_text": item.matched_prompt_text or "",
+                    "normalization_suggestion": item.normalization_suggestion,
                 }
             )
         return buffer.getvalue()

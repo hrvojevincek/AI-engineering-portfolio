@@ -83,7 +83,13 @@ def test_expired_entry_is_miss(namespace):
 
 
 def test_hit_increments_hit_count(service, namespace):
-    service.put(namespace, "What is Python?", {"answer": "python"})
+    service.put(
+        namespace,
+        "What is Python?",
+        {"answer": "python"},
+        prompt_tokens=12,
+        completion_tokens=8,
+    )
 
     first = service.get(namespace, "What is Python?")
     second = service.get(namespace, "What is Python?")
@@ -92,3 +98,22 @@ def test_hit_increments_hit_count(service, namespace):
     assert second.status == LookupStatus.HIT
     assert second.entry is not None
     assert second.entry.hit_count == 2
+    assert second.entry.tokens_saved == 40
+
+
+def test_expired_entries_are_purged(namespace):
+    store = MemoryCacheStore()
+    now = datetime.now(timezone.utc)
+    entry = build_entry(
+        namespace,
+        "What is Python?",
+        [1.0, 0.0, 0.0],
+        {"answer": "python"},
+        ttl_seconds=3600,
+        now=now - timedelta(hours=2),
+    )
+    entry.expires_at = now - timedelta(seconds=1)
+    store.store(entry)
+
+    assert store.purge_expired(now=now) == 1
+    assert store.count_active(now=now) == 0

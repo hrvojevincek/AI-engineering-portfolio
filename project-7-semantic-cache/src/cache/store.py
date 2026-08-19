@@ -3,11 +3,10 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-
 from typing import Protocol
 
 from src.cache.embed import Embedder
-from src.cache.lookup import DEFAULT_THRESHOLD, VectorCandidate, find_best_match, lookup
+from src.cache.lookup import DEFAULT_THRESHOLD, VectorCandidate, classify_lookup, find_best_match
 from src.models.types import CacheEntry, CacheNamespace, LookupResult, LookupStatus
 from src.policies.invalidation import InvalidateBy, entry_matches
 
@@ -64,6 +63,8 @@ class CacheStore(Protocol):
 
     def count_active(self, now: datetime | None = None) -> int: ...
 
+    def purge_expired(self, now: datetime | None = None) -> int: ...
+
 
 class MemoryCacheStore:
     """In-memory vector cache for dev/tests. Redis lands in redis_store.py."""
@@ -112,36 +113,38 @@ class MemoryCacheStore:
         now: datetime | None = None,
     ) -> LookupResult:
         now = now or datetime.now(timezone.utc)
-        result = lookup(
-            query_embedding,
-            self._active_candidates(namespace, now),
+        similarity, entry = self.find_best_match(namespace, query_embedding, now=now)
+        result = classify_lookup(
+            similarity,
             threshold=threshold,
+            entry_id=entry.id if entry else None,
         )
+        matched_prompt = entry.prompt_text if entry else None
 
-        if result.status != LookupStatus.HIT or not result.entry_id:
+        if result.status != LookupStatus.HIT or entry is None:
             return LookupResult(
                 status=result.status,
                 similarity=result.similarity,
-                entry_id=result.entry_id,
+                entry_id=None,
                 entry=None,
                 threshold=result.threshold,
+                matched_prompt_text=matched_prompt,
             )
 
-        entry = self._entries[result.entry_id]
         entry.hit_count += 1
+        entry.tokens_saved += entry.prompt_tokens + entry.completion_tokens
         return LookupResult(
             status=LookupStatus.HIT,
             similarity=result.similarity,
             entry_id=entry.id,
             entry=entry,
             threshold=result.threshold,
+            matched_prompt_text=matched_prompt,
         )
 
     def invalidate(self, by: InvalidateBy, value: str) -> int:
         to_delete = [
-            entry_id
-            for entry_id, entry in self._entries.items()
-            if entry_matches(entry, by, value)
+            entry_id for entry_id, entry in self._entries.items() if entry_matches(entry, by, value)
         ]
         for entry_id in to_delete:
             del self._entries[entry_id]
@@ -150,6 +153,13 @@ class MemoryCacheStore:
     def count_active(self, now: datetime | None = None) -> int:
         now = now or datetime.now(timezone.utc)
         return sum(1 for entry in self._entries.values() if not entry.is_expired(now))
+
+    def purge_expired(self, now: datetime | None = None) -> int:
+        now = now or datetime.now(timezone.utc)
+        expired = [entry_id for entry_id, entry in self._entries.items() if entry.is_expired(now)]
+        for entry_id in expired:
+            del self._entries[entry_id]
+        return len(expired)
 
 
 class CacheService:
@@ -210,3 +220,6 @@ class CacheService:
 
     def active_entry_count(self) -> int:
         return self.store.count_active()
+
+    def purge_expired(self) -> int:
+        return self.store.purge_expired()

@@ -173,9 +173,19 @@
           "expr": "histogram_quantile(0.95, sum(rate(cache_request_latency_seconds_bucket{result=\"miss\"}[5m])) by (le))",
           "legendFormat": "miss p95",
           "refId": "D"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(cache_request_latency_seconds_bucket{result=\"hit\"}[5m])) by (le))",
+          "legendFormat": "hit p99",
+          "refId": "E"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(cache_request_latency_seconds_bucket{result=\"miss\"}[5m])) by (le))",
+          "legendFormat": "miss p99",
+          "refId": "F"
         }
       ],
-      "title": "Request Latency P50 / P95",
+      "title": "Request Latency P50 / P95 / P99",
       "type": "timeseries"
     },
     {
@@ -255,6 +265,85 @@
         }
       ],
       "title": "Similarity Score Distribution",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 26
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(cache_requests_total{result=\"hit\"}[7d])) / sum(rate(cache_requests_total[7d]))",
+          "legendFormat": "hit rate 7d",
+          "refId": "A"
+        }
+      ],
+      "title": "Hit Rate (7d)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 26
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "expr": "cache_entries_active",
+          "legendFormat": "active entries",
+          "refId": "A"
+        },
+        {
+          "expr": "rate(cache_evictions_total[5m])",
+          "legendFormat": "evictions / sec",
+          "refId": "B"
+        }
+      ],
+      "title": "Capacity and Evictions",
       "type": "timeseries"
     }
   ],

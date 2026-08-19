@@ -32,20 +32,21 @@ User is **learning**, not just shipping. For each task:
 ## Conventions
 
 - Python 3.12+ via **uv**: `uv venv` then `uv pip install -r requirements.txt`
-- Cache entries in **Redis + RedisVL** (vector index)
+- Cache entries in **Redis + RedisVL** (vector index); local/tests may use in-memory store
 - Proxy mirrors **OpenAI chat completions** API shape
+- Anthropic + Ollama adapters are **501 stubs** until Phase 2.3b
 - Env vars: `OPENAI_API_KEY`, `REDIS_URL`, optional `ANTHROPIC_API_KEY`
 
 ## Target Layout (create as needed)
 
 ```
 src/
-  cache/              # embed, lookup, store, eviction
+  cache/              # embed, lookup, store, redis_store, factory
   proxy/              # FastAPI OpenAI-compatible routes
-  providers/          # OpenAI, Anthropic, Ollama adapters
+  providers/          # OpenAI adapter; Anthropic/Ollama 501 stubs
   policies/           # TTL tiers, invalidation, adaptive thresholds
   metrics/            # Prometheus instrumentation
-scripts/              # load test, threshold tuner, seed queries
+scripts/              # demo, load test, threshold tuner, seed queries
 grafana/              # pre-built dashboards
 docker-compose.yml
 Dockerfile

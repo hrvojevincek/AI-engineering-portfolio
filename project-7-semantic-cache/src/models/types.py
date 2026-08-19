@@ -40,6 +40,7 @@ class LookupResult(BaseModel):
     entry_id: str | None = None
     entry: "CacheEntry | None" = None
     threshold: float
+    matched_prompt_text: str | None = None
 
 
 class CacheEntry(BaseModel):
@@ -53,6 +54,7 @@ class CacheEntry(BaseModel):
     hit_count: int = 0
     prompt_tokens: int = 0
     completion_tokens: int = 0
+    tokens_saved: int = 0
     finish_reason: str | None = None
     tags: list[str] = Field(default_factory=list)
 

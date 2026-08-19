@@ -55,6 +55,7 @@ class ThresholdResult(BaseModel):
     miss_rate: float
     near_miss_rate: float
     paraphrase_hit_rate: float
+    wrong_answer_rate: float
 
 
 class ThresholdTunerResponse(BaseModel):

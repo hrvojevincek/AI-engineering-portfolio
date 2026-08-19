@@ -11,7 +11,7 @@ from redisvl.query import VectorQuery
 from redisvl.query.filter import Tag
 
 from src.cache.embed import EMBEDDING_DIMS
-from src.cache.lookup import DEFAULT_THRESHOLD, NEAR_MISS_GAP
+from src.cache.lookup import DEFAULT_THRESHOLD, classify_lookup
 from src.models.types import CacheEntry, CacheNamespace, LookupResult, LookupStatus, Provider
 from src.policies.invalidation import InvalidateBy, entry_matches
 
@@ -39,9 +39,26 @@ CACHE_INDEX_SCHEMA = {
         {"name": "hit_count", "type": "numeric"},
         {"name": "prompt_tokens", "type": "numeric"},
         {"name": "completion_tokens", "type": "numeric"},
+        {"name": "tokens_saved", "type": "numeric"},
         {"name": "tags_json", "type": "text"},
     ],
 }
+
+
+def _parse_namespace(namespace_key: str) -> CacheNamespace | None:
+    parts = namespace_key.split(":", 4)
+    if len(parts) != 5:
+        return None
+    provider_raw, model, system_prompt_hash, temp_raw, tokens_raw = parts
+    temperature = None if temp_raw == "none" else float(temp_raw)
+    max_tokens = None if tokens_raw == "none" else int(tokens_raw)
+    return CacheNamespace(
+        provider=Provider(provider_raw),
+        model=model,
+        system_prompt_hash=system_prompt_hash,
+        temperature=temperature,
+        max_tokens=max_tokens,
+    )
 
 
 class RedisCacheStore:
@@ -49,6 +66,9 @@ class RedisCacheStore:
         self.redis = Redis.from_url(redis_url, decode_responses=True)
         self.index = SearchIndex.from_dict(CACHE_INDEX_SCHEMA, redis_url=redis_url)
         self.index.create(overwrite=False)
+
+    def _redis_key(self, entry_id: str) -> str:
+        return f"cache:{entry_id}"
 
     def store(self, entry: CacheEntry) -> str:
         self.index.load(
@@ -64,10 +84,11 @@ class RedisCacheStore:
                     "hit_count": entry.hit_count,
                     "prompt_tokens": entry.prompt_tokens,
                     "completion_tokens": entry.completion_tokens,
+                    "tokens_saved": entry.tokens_saved,
                     "tags_json": json.dumps(entry.tags),
                 }
             ],
-            id=f"cache:{entry.id}",
+            id=entry.id,
         )
         return entry.id
 
@@ -92,34 +113,38 @@ class RedisCacheStore:
                 "hit_count",
                 "prompt_tokens",
                 "completion_tokens",
+                "tokens_saved",
                 "tags_json",
             ],
         )
         results = self.index.query(query)
         return results[0] if results else None
 
-    @staticmethod
     def _entry_from_record(
-        namespace: CacheNamespace,
+        self,
         record: dict,
         *,
-        query_embedding: list[float],
-        similarity: float,
-    ) -> CacheEntry:
+        namespace: CacheNamespace | None = None,
+        query_embedding: list[float] | None = None,
+    ) -> CacheEntry | None:
+        resolved = namespace or _parse_namespace(record.get("namespace_key") or "")
+        if resolved is None or not record.get("entry_id"):
+            return None
         created_at = datetime.fromtimestamp(float(record["created_at"]), tz=timezone.utc)
         expires_at = datetime.fromtimestamp(float(record["expires_at"]), tz=timezone.utc)
         tags_raw = record.get("tags_json") or "[]"
         return CacheEntry(
             id=record["entry_id"],
-            namespace=namespace,
-            prompt_text=record["prompt_text"],
-            embedding=query_embedding,
-            response=json.loads(record["response_json"]),
+            namespace=resolved,
+            prompt_text=record.get("prompt_text", ""),
+            embedding=query_embedding or [],
+            response=json.loads(record.get("response_json") or "{}"),
             created_at=created_at,
             expires_at=expires_at,
-            hit_count=int(float(record["hit_count"])),
-            prompt_tokens=int(float(record["prompt_tokens"])),
-            completion_tokens=int(float(record["completion_tokens"])),
+            hit_count=int(float(record.get("hit_count") or 0)),
+            prompt_tokens=int(float(record.get("prompt_tokens") or 0)),
+            completion_tokens=int(float(record.get("completion_tokens") or 0)),
+            tokens_saved=int(float(record.get("tokens_saved") or 0)),
             tags=json.loads(tags_raw),
         )
 
@@ -136,16 +161,9 @@ class RedisCacheStore:
             return None, None
 
         similarity = 1.0 - float(top.get("vector_distance", 1.0))
-        expires_at = datetime.fromtimestamp(float(top["expires_at"]), tz=timezone.utc)
-        if now >= expires_at:
+        entry = self._entry_from_record(top, namespace=namespace, query_embedding=query_embedding)
+        if entry is None or entry.is_expired(now):
             return similarity, None
-
-        entry = self._entry_from_record(
-            namespace,
-            top,
-            query_embedding=query_embedding,
-            similarity=similarity,
-        )
         return similarity, entry
 
     def lookup(
@@ -157,45 +175,36 @@ class RedisCacheStore:
         now: datetime | None = None,
     ) -> LookupResult:
         now = now or datetime.now(timezone.utc)
-        top = self._query_top(namespace, query_embedding)
-        if not top:
-            return LookupResult(status=LookupStatus.MISS, threshold=threshold)
-
-        similarity = 1.0 - float(top.get("vector_distance", 1.0))
-        expires_at = datetime.fromtimestamp(float(top["expires_at"]), tz=timezone.utc)
-        if now >= expires_at:
-            return LookupResult(
-                status=LookupStatus.MISS,
-                similarity=similarity,
-                threshold=threshold,
-            )
-
-        if similarity < threshold:
-            near_miss = similarity >= threshold - NEAR_MISS_GAP
-            return LookupResult(
-                status=LookupStatus.NEAR_MISS if near_miss else LookupStatus.MISS,
-                similarity=similarity,
-                threshold=threshold,
-            )
-
-        entry_id = top["entry_id"]
-        hit_count = int(float(top["hit_count"])) + 1
-        self.redis.hset(f"cache:{entry_id}", "hit_count", hit_count)
-
-        entry = self._entry_from_record(
-            namespace,
-            top,
-            query_embedding=query_embedding,
-            similarity=similarity,
+        similarity, entry = self.find_best_match(namespace, query_embedding, now=now)
+        result = classify_lookup(
+            similarity,
+            threshold=threshold,
+            entry_id=entry.id if entry else None,
         )
-        entry.hit_count = hit_count
+        matched_prompt = entry.prompt_text if entry else None
+        if result.status != LookupStatus.HIT or entry is None:
+            return LookupResult(
+                status=result.status,
+                similarity=result.similarity,
+                entry_id=None,
+                entry=None,
+                threshold=result.threshold,
+                matched_prompt_text=matched_prompt,
+            )
 
+        entry.hit_count += 1
+        entry.tokens_saved += entry.prompt_tokens + entry.completion_tokens
+        self.redis.hset(
+            self._redis_key(entry.id),
+            mapping={"hit_count": entry.hit_count, "tokens_saved": entry.tokens_saved},
+        )
         return LookupResult(
             status=LookupStatus.HIT,
             similarity=similarity,
-            entry_id=entry_id,
+            entry_id=entry.id,
             entry=entry,
             threshold=threshold,
+            matched_prompt_text=matched_prompt,
         )
 
     def invalidate(self, by: InvalidateBy, value: str) -> int:
@@ -204,7 +213,7 @@ class RedisCacheStore:
             record = self.redis.hgetall(key)
             if not record:
                 continue
-            entry = self._entry_from_scan(record)
+            entry = self._entry_from_record(record)
             if entry is None:
                 continue
             if entry_matches(entry, by, value):
@@ -217,44 +226,22 @@ class RedisCacheStore:
         active = 0
         for key in self.redis.scan_iter("cache:*"):
             record = self.redis.hgetall(key)
-            if not record:
+            if not record or "expires_at" not in record:
                 continue
             expires_at = datetime.fromtimestamp(float(record["expires_at"]), tz=timezone.utc)
             if now < expires_at:
                 active += 1
         return active
 
-    @staticmethod
-    def _entry_from_scan(record: dict[str, str]) -> CacheEntry | None:
-        namespace_key = record.get("namespace_key")
-        if not namespace_key:
-            return None
-        parts = namespace_key.split(":", 4)
-        if len(parts) != 5:
-            return None
-        provider_raw, model, system_prompt_hash, temp_raw, tokens_raw = parts
-        temperature = None if temp_raw == "none" else float(temp_raw)
-        max_tokens = None if tokens_raw == "none" else int(tokens_raw)
-        namespace = CacheNamespace(
-            provider=Provider(provider_raw),
-            model=model,
-            system_prompt_hash=system_prompt_hash,
-            temperature=temperature,
-            max_tokens=max_tokens,
-        )
-        created_at = datetime.fromtimestamp(float(record["created_at"]), tz=timezone.utc)
-        expires_at = datetime.fromtimestamp(float(record["expires_at"]), tz=timezone.utc)
-        tags_raw = record.get("tags_json") or "[]"
-        return CacheEntry(
-            id=record["entry_id"],
-            namespace=namespace,
-            prompt_text=record.get("prompt_text", ""),
-            embedding=[],
-            response=json.loads(record.get("response_json") or "{}"),
-            created_at=created_at,
-            expires_at=expires_at,
-            hit_count=int(float(record.get("hit_count") or 0)),
-            prompt_tokens=int(float(record.get("prompt_tokens") or 0)),
-            completion_tokens=int(float(record.get("completion_tokens") or 0)),
-            tags=json.loads(tags_raw),
-        )
+    def purge_expired(self, now: datetime | None = None) -> int:
+        now = now or datetime.now(timezone.utc)
+        deleted = 0
+        for key in self.redis.scan_iter("cache:*"):
+            record = self.redis.hgetall(key)
+            if not record or "expires_at" not in record:
+                continue
+            expires_at = datetime.fromtimestamp(float(record["expires_at"]), tz=timezone.utc)
+            if now >= expires_at:
+                self.redis.delete(key)
+                deleted += 1
+        return deleted

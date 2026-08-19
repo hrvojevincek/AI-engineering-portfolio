@@ -27,7 +27,7 @@ CacheEntry
   created_at: datetime
   expires_at: datetime
   hit_count: int
-  tokens_saved: int           # cumulative on hits
+  tokens_saved: int           # cumulative on hits (prompt + completion tokens)
   metadata:
     finish_reason: str
     prompt_tokens: int
@@ -42,6 +42,7 @@ LookupResult
   similarity: float | null
   entry: CacheEntry | null
   threshold: float
+  matched_prompt_text: str | null
 ```
 
 ## Proxy request/response (Phase 2)
@@ -51,6 +52,9 @@ Mirror OpenAI `ChatCompletionCreateParams` / `ChatCompletion` shapes. Add respon
 ```text
 X-Cache: HIT | MISS
 X-Cache-Similarity: 0.97      # only on HIT
+X-Cache-TTL-Tier: default     # miss only
+X-Cache-Request-Type: classification | default | creative
+X-Cache-Threshold: 0.9500
 ```
 
 ## TTL policy (Phase 3)
@@ -76,10 +80,12 @@ InvalidateRequest
 | ------------------------------ | --------- | --------------------------- |
 | `cache_requests_total`         | counter   | `result=hit\|miss`, `model` |
 | `cache_lookup_latency_seconds` | histogram | —                           |
+| `cache_request_latency_seconds`| histogram | `result`, `model`           |
 | `cache_similarity_score`       | histogram | `result`                    |
 | `cache_tokens_saved_total`     | counter   | `model`                     |
 | `cache_entries_active`         | gauge     | —                           |
 | `cache_near_miss_total`        | counter   | `model`                     |
+| `cache_evictions_total`        | counter   | —                           |
 
 ## Near-miss log (Phase 4)
 
@@ -89,5 +95,6 @@ NearMiss
   best_similarity: float
   threshold: float
   gap: float                   # threshold - best_similarity
+  normalization_suggestion: str
   timestamp: datetime
 ```

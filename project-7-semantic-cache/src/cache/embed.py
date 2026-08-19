@@ -35,6 +35,10 @@ class MockEmbedder:
         "what is java?": [0.0, 1.0, 0.0],
     }
 
+    def __init__(self) -> None:
+        self.call_count = 0
+
     def embed(self, text: str) -> list[float]:
+        self.call_count += 1
         normalized = text.lower().strip()
         return self.PHRASE_VECTORS.get(normalized, [0.0, 0.0, 1.0])

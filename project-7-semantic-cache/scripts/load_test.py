@@ -7,7 +7,6 @@ import argparse
 import asyncio
 import json
 import random
-import statistics
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -37,7 +36,9 @@ class LoadTestReport:
     latency_p50_ms: float
     latency_p95_ms: float
     hit_latency_p50_ms: float
+    hit_latency_p95_ms: float
     miss_latency_p50_ms: float
+    miss_latency_p95_ms: float
     duration_seconds: float
     requests_per_second: float
 
@@ -50,28 +51,46 @@ class LoadTestReport:
             "latency_p50_ms": round(self.latency_p50_ms, 2),
             "latency_p95_ms": round(self.latency_p95_ms, 2),
             "hit_latency_p50_ms": round(self.hit_latency_p50_ms, 2),
+            "hit_latency_p95_ms": round(self.hit_latency_p95_ms, 2),
             "miss_latency_p50_ms": round(self.miss_latency_p50_ms, 2),
+            "miss_latency_p95_ms": round(self.miss_latency_p95_ms, 2),
             "duration_seconds": round(self.duration_seconds, 2),
             "requests_per_second": round(self.requests_per_second, 2),
         }
 
 
-def build_prompt_pool(seed_path: Path) -> list[str]:
-    payload = json.loads(seed_path.read_text(encoding="utf-8"))
-    pool: list[str] = []
-    for group in payload["groups"]:
-        pool.extend(group)
-    pool.extend(payload.get("unique_queries", []))
-    return pool
+def _percentile(values: list[float], pct: float) -> float:
+    if not values:
+        return 0.0
+    ordered = sorted(values)
+    if len(ordered) == 1:
+        return ordered[0]
+    rank = (len(ordered) - 1) * pct
+    lower = int(rank)
+    upper = min(lower + 1, len(ordered) - 1)
+    weight = rank - lower
+    return ordered[lower] * (1 - weight) + ordered[upper] * weight
 
 
-def choose_prompt(pool: list[str], *, repeat_ratio: float, paraphrase_ratio: float) -> str:
+def load_seed(seed_path: Path) -> dict:
+    return json.loads(seed_path.read_text(encoding="utf-8"))
+
+
+def choose_prompt(
+    groups: list[list[str]],
+    unique_queries: list[str],
+    *,
+    repeat_ratio: float,
+    paraphrase_ratio: float,
+) -> str:
     roll = random.random()
     if roll < repeat_ratio:
-        return random.choice(pool)
+        return random.choice([group[0] for group in groups])
     if roll < repeat_ratio + paraphrase_ratio:
-        return random.choice(pool)
-    return f"Unique request {random.randint(1, 1_000_000)}: {random.choice(pool)}"
+        paraphrases = [phrase for group in groups for phrase in group[1:]]
+        return random.choice(paraphrases or [group[0] for group in groups])
+    base = random.choice(unique_queries or [group[0] for group in groups])
+    return f"Unique request {random.randint(1, 1_000_000)}: {base}"
 
 
 def summarize(samples: list[RequestSample], *, duration_seconds: float) -> LoadTestReport:
@@ -93,12 +112,12 @@ def summarize(samples: list[RequestSample], *, duration_seconds: float) -> LoadT
         hits=hits,
         misses=misses,
         hit_rate=hits / len(samples) if samples else 0.0,
-        latency_p50_ms=statistics.median(latencies_ms) if latencies_ms else 0.0,
-        latency_p95_ms=(
-            statistics.quantiles(latencies_ms, n=20)[18] if len(latencies_ms) >= 20 else max(latencies_ms, default=0.0)
-        ),
-        hit_latency_p50_ms=statistics.median(hit_latencies) if hit_latencies else 0.0,
-        miss_latency_p50_ms=statistics.median(miss_latencies) if miss_latencies else 0.0,
+        latency_p50_ms=_percentile(latencies_ms, 0.50),
+        latency_p95_ms=_percentile(latencies_ms, 0.95),
+        hit_latency_p50_ms=_percentile(hit_latencies, 0.50),
+        hit_latency_p95_ms=_percentile(hit_latencies, 0.95),
+        miss_latency_p50_ms=_percentile(miss_latencies, 0.50),
+        miss_latency_p95_ms=_percentile(miss_latencies, 0.95),
         duration_seconds=duration_seconds,
         requests_per_second=len(samples) / duration_seconds if duration_seconds else 0.0,
     )
@@ -138,7 +157,8 @@ async def run_load_test(
     paraphrase_ratio: float,
 ) -> LoadTestReport:
     seed = json.loads(seed_path.read_text(encoding="utf-8"))
-    pool = build_prompt_pool(seed_path)
+    groups = seed["groups"]
+    unique_queries = seed.get("unique_queries", [])
     system_prompt = seed["system_prompt"]
     model = seed.get("model", DEFAULT_PAYLOAD["model"])
     semaphore = asyncio.Semaphore(concurrency)
@@ -147,7 +167,8 @@ async def run_load_test(
     async with httpx.AsyncClient(timeout=30.0) as client:
         async def worker() -> None:
             prompt = choose_prompt(
-                pool,
+                groups,
+                unique_queries,
                 repeat_ratio=repeat_ratio,
                 paraphrase_ratio=paraphrase_ratio,
             )

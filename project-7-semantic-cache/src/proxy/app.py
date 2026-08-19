@@ -21,6 +21,7 @@ from src.policies.adaptive_threshold import AdaptiveThresholdPolicy
 from src.policies.query_log import QueryLog, QueryRecord
 from src.policies.threshold_tuner import simulate_thresholds
 from src.policies.ttl import TTLPolicy
+from src.providers.base import ChatProvider
 from src.providers.router import ProviderRouter
 from src.proxy.schemas import (
     ChatCompletionRequest,
@@ -35,7 +36,6 @@ from src.proxy.streaming import (
     accumulate_stream_chunk,
     build_completion_dict,
     parse_sse_payload,
-    stream_cached_entry,
 )
 
 load_dotenv()
@@ -99,6 +99,8 @@ def _tokens_saved(entry: LookupResult) -> int:
 
 
 def _refresh_entry_gauge(cache_service: CacheService, metrics: CacheMetrics) -> None:
+    evicted = cache_service.purge_expired()
+    metrics.record_evictions(evicted)
     metrics.set_active_entries(cache_service.active_entry_count())
 
 
@@ -132,25 +134,27 @@ def _perform_lookup(
     threshold: float | None,
     query_log: QueryLog,
     metrics: CacheMetrics,
-) -> tuple[LookupResult, float | None]:
+) -> tuple[LookupResult, str | None]:
     lookup_started = time.perf_counter()
-    similarity, matched_prompt = cache_service.peek(namespace, prompt_text)
-    query_log.append(
-        namespace,
-        prompt_text,
-        best_similarity=similarity,
-        matched_prompt_text=matched_prompt,
-    )
     if threshold is None:
+        similarity, matched_prompt = cache_service.peek(namespace, prompt_text)
         cached = LookupResult(
             status=LookupStatus.MISS,
-            similarity=None,
+            similarity=similarity,
             entry_id=None,
             entry=None,
             threshold=DEFAULT_THRESHOLD,
+            matched_prompt_text=matched_prompt,
         )
     else:
         cached = cache_service.get(namespace, prompt_text, threshold=threshold)
+        matched_prompt = cached.matched_prompt_text
+    query_log.append(
+        namespace,
+        prompt_text,
+        best_similarity=cached.similarity,
+        matched_prompt_text=matched_prompt,
+    )
     metrics.record_lookup(latency_seconds=time.perf_counter() - lookup_started)
     return cached, matched_prompt
 
@@ -289,6 +293,7 @@ def create_app(
                     miss_rate=item.miss_rate,
                     near_miss_rate=item.near_miss_rate,
                     paraphrase_hit_rate=item.paraphrase_hit_rate,
+                    wrong_answer_rate=item.wrong_answer_rate,
                 )
                 for item in simulations
             ],
@@ -341,45 +346,6 @@ def create_app(
                 matched_prompt=matched_prompt,
             )
 
-        if body.stream:
-            if cached.status == LookupStatus.HIT and cached.entry is not None:
-                cache_metrics.record_hit(
-                    model=body.model,
-                    similarity=cached.similarity or 0.0,
-                    tokens_saved=_tokens_saved(cached),
-                    request_latency_seconds=time.perf_counter() - request_started,
-                )
-                return StreamingResponse(
-                    stream_cached_entry(cached.entry),
-                    media_type="text/event-stream",
-                    headers=_cache_hit_headers(
-                        cached.similarity or 0.0,
-                        threshold_policy=threshold_policy,
-                        prompt_text=prompt_text,
-                    ),
-                )
-            cache_metrics.record_miss(
-                model=body.model,
-                similarity=cached.similarity,
-                request_latency_seconds=time.perf_counter() - request_started,
-            )
-            provider = provider_router.resolve(body.model)
-            return StreamingResponse(
-                _stream_miss(
-                    provider=provider,
-                    body=body,
-                    cache_service=cache_service,
-                    namespace=namespace,
-                    prompt_text=prompt_text,
-                    ttl_policy=ttl_policy,
-                    cache_tags=cache_tags,
-                    threshold_policy=threshold_policy,
-                    metrics=cache_metrics,
-                ),
-                media_type="text/event-stream",
-                headers=miss_headers,
-            )
-
         if cached.status == LookupStatus.HIT and cached.entry is not None:
             cache_metrics.record_hit(
                 model=body.model,
@@ -397,6 +363,28 @@ def create_app(
             )
 
         provider = provider_router.resolve(body.model)
+        if body.stream:
+            cache_metrics.record_miss(
+                model=body.model,
+                similarity=cached.similarity,
+                request_latency_seconds=time.perf_counter() - request_started,
+            )
+            return StreamingResponse(
+                _stream_miss(
+                    provider=provider,
+                    body=body,
+                    cache_service=cache_service,
+                    namespace=namespace,
+                    prompt_text=prompt_text,
+                    ttl_policy=ttl_policy,
+                    cache_tags=cache_tags,
+                    threshold_policy=threshold_policy,
+                    metrics=cache_metrics,
+                ),
+                media_type="text/event-stream",
+                headers=miss_headers,
+            )
+
         upstream = await provider.chat_completion(body)
         _store_upstream_response(
             cache_service,
@@ -420,7 +408,7 @@ def create_app(
 
 async def _stream_miss(
     *,
-    provider: Any,
+    provider: ChatProvider,
     body: ChatCompletionRequest,
     cache_service: CacheService,
     namespace: CacheNamespace,

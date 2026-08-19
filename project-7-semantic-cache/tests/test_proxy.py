@@ -82,7 +82,7 @@ def test_stream_miss_then_hit_calls_provider_once():
     assert second.status_code == 200
     assert second.headers["x-cache"] == "HIT"
     assert "x-cache-similarity" in second.headers
-    assert "[DONE]" in second.text
+    assert second.json()["choices"][0]["message"]["content"]
     assert fake.call_count == 1
 
 
@@ -94,7 +94,7 @@ def test_stream_hit_after_non_stream_seed():
 
     assert result.status_code == 200
     assert result.headers["x-cache"] == "HIT"
-    assert "Python is a programming language." in result.text
+    assert result.json()["choices"][0]["message"]["content"] == "Python is a programming language."
     assert fake.call_count == 1
 
 
@@ -123,3 +123,17 @@ def test_stream_miss_caches_for_non_stream_repeat():
     assert result.status_code == 200
     assert result.headers["x-cache"] == "HIT"
     assert fake.call_count == 1
+
+
+def test_lookup_embeds_once_per_request():
+    fake = FakeChatProvider()
+    embedder = MockEmbedder()
+    cache = CacheService(MemoryCacheStore(), embedder)
+    client = TestClient(create_app(cache=cache, router=ProviderRouter(openai=fake)))
+
+    client.post("/v1/chat/completions", json=PAYLOAD)
+    after_miss = embedder.call_count
+    client.post("/v1/chat/completions", json=PAYLOAD)
+
+    assert after_miss == 2
+    assert embedder.call_count == after_miss + 1

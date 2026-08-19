@@ -44,9 +44,9 @@ Example headline from a 2,000-request demo run (35% exact repeats + 35% paraphra
 | Metric | Typical demo result |
 | --- | --- |
 | Hit rate | ~65–75% after warm-up |
-| Hit latency P50 | ~10–20 ms |
-| Miss latency P50 | ~100–200 ms (fake provider) |
-| Tokens saved | ~12–16 tokens × hit count |
+| Sequential hit latency | tens of ms |
+| Sequential miss latency | fake-provider + embed (varies with load) |
+| Tokens saved | ~12–20 tokens × hit count |
 
 At production scale (1M requests/month, $2/M input tokens, 70% hit rate, 20 tokens/request avoided):
 
@@ -75,9 +75,22 @@ Optional Ollama sidecar:
 docker compose --profile ollama up
 ```
 
+### Portfolio demo (Phase 6)
+
+```bash
+# 3-step walkthrough: miss → hit → semantic hit
+python scripts/demo.py
+
+# Full recording flow + 2k load test for Grafana
+python scripts/demo.py --load-test --requests 2000
+```
+
+Recording runbook: [`docs/DEMO.md`](docs/DEMO.md)  
+Case study: [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md)
+
 ## Headline story
 
-**"Change the base URL, save 40% on LLM spend."** — OpenAI-compatible proxy with semantic cache hits, streaming pass-through, and Grafana dashboards showing real cost savings.
+**"Drop-in caching layer cut upstream LLM calls by 68% on a mixed 2,000-request load test."**
 
 ## Layout
 
@@ -87,7 +100,7 @@ src/proxy/          FastAPI /v1/chat/completions
 src/providers/      OpenAI, Anthropic, Ollama
 src/policies/       TTL, invalidation, thresholds
 src/metrics/        Prometheus exporters
-scripts/            load_test.py, seed_queries.json
+scripts/            demo.py, load_test.py, threshold_tuner.py, seed_queries.json
 grafana/            Dashboards
 prometheus/         Scrape config
 ```

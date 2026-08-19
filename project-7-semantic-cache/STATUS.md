@@ -5,11 +5,11 @@
 
 ## Snapshot
 
-| Field            | Value                                 |
-| ---------------- | ------------------------------------- |
-| **Phase**        | 6 — Portfolio                         |
-| **Next task**    | Phase 6.1 — demo recording              |
-| **Last updated** | 2026-08-19                            |
+| Field            | Value                                  |
+| ---------------- | -------------------------------------- |
+| **Phase**        | 6 — Portfolio (complete)               |
+| **Next task**    | Record demo video / publish case study |
+| **Last updated** | 2026-08-19                             |
 
 ## Phase Checklist
 
@@ -38,7 +38,7 @@
 ### Phase 4 — Monitoring & Analytics (Day 8–10)
 
 - [x] 4.1 Prometheus metrics: hit rate, latency, cost savings, similarity distribution
-- [x] 4.2 Grafana dashboard (hit rate, savings, P50/P95 latency, capacity)
+- [x] 4.2 Grafana dashboard (hit rate, savings, P50/P95/P99 latency, capacity)
 - [x] 4.3 Near-miss analyzer (queries just below threshold)
 
 ### Phase 5 — Containerize & Load Test (Day 10–12)
@@ -49,8 +49,8 @@
 
 ### Phase 6 — Portfolio (Day 12–14)
 
-- [ ] 6.1 Demo: miss → hit → semantic hit → Grafana savings
-- [ ] 6.2 Case study headline: "X% cost cut, Y% P95 latency reduction"
+- [x] 6.1 Demo: miss → hit → semantic hit → Grafana savings
+- [x] 6.2 Case study headline: "X% cost cut, Y% P95 latency reduction"
 
 ## Files Present
 
@@ -68,7 +68,8 @@ src/proxy/          app, schemas, streaming
 src/providers/      OpenAI adapter, router, fakes
 src/policies/       TTL, invalidation, threshold tuner, adaptive thresholds
 src/metrics/        Prometheus instrumentation, near-miss log
-scripts/            load_test.py, seed_queries.json
+scripts/            demo.py, load_test.py, threshold_tuner.py, seed_queries.json
+docs/               BUILD_GUIDE, CASE_STUDY, DEMO
 tests/              unit + proxy integration tests
 Dockerfile
 grafana/            dashboard + provisioning
@@ -85,4 +86,4 @@ prometheus/         scrape config
 
 ## Session Notes
 
-Phase 5 complete (docker-compose stack, Redis-backed proxy, load test script, README proposal). Next: Phase 6 demo + case study.
+Phase 6 complete. Review fixes: single-embed lookup, streaming hits return JSON, load-test paraphrase mix, Redis key/hit-count, eviction metric, honest case-study numbers. Anthropic/Ollama remain 501 stubs. Say **push** when you want this on GitHub.

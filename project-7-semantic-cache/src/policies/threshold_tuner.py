@@ -16,6 +16,7 @@ class ThresholdSimulation:
     miss_rate: float
     near_miss_rate: float
     paraphrase_hit_rate: float
+    wrong_answer_rate: float
 
 
 def _is_paraphrase_hit(record: QueryRecord, threshold: float) -> bool:
@@ -34,6 +35,7 @@ def simulate_threshold(records: list[QueryRecord], threshold: float) -> Threshol
             miss_rate=0.0,
             near_miss_rate=0.0,
             paraphrase_hit_rate=0.0,
+            wrong_answer_rate=0.0,
         )
 
     hits = near_misses = misses = paraphrase_hits = 0
@@ -55,6 +57,7 @@ def simulate_threshold(records: list[QueryRecord], threshold: float) -> Threshol
         miss_rate=round(misses / total, 4),
         near_miss_rate=round(near_misses / total, 4),
         paraphrase_hit_rate=round(paraphrase_hits / total, 4),
+        wrong_answer_rate=round(paraphrase_hits / total, 4),
     )
 
 

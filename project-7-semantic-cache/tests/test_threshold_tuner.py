@@ -98,5 +98,6 @@ def test_simulate_thresholds_unit():
 
     assert low.hit_rate == pytest.approx(2 / 3, rel=1e-3)
     assert low.paraphrase_hit_rate == pytest.approx(1 / 3, rel=1e-3)
+    assert low.wrong_answer_rate == low.paraphrase_hit_rate
     assert high.hit_rate == pytest.approx(1 / 3, rel=1e-3)
     assert high.paraphrase_hit_rate == 0.0

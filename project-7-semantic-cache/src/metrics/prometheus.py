@@ -52,6 +52,11 @@ class CacheMetrics:
             ["model"],
             registry=self.registry,
         )
+        self.evictions_total = Counter(
+            "cache_evictions_total",
+            "Expired cache entries purged from the store",
+            registry=self.registry,
+        )
 
     def record_lookup(self, *, latency_seconds: float) -> None:
         self.lookup_latency_seconds.observe(latency_seconds)
@@ -91,3 +96,7 @@ class CacheMetrics:
 
     def set_active_entries(self, count: int) -> None:
         self.entries_active.set(count)
+
+    def record_evictions(self, count: int) -> None:
+        if count > 0:
+            self.evictions_total.inc(count)

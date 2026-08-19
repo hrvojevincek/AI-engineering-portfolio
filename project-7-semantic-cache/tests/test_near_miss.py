@@ -30,6 +30,8 @@ def test_near_miss_gap_and_csv_export():
     )
     row = log.to_dicts()[0]
     assert row["gap"] == 0.02
+    assert row["normalization_suggestion"] == "python"
     csv_text = log.to_csv()
     assert "Tell me about Python" in csv_text
     assert "What is Python?" in csv_text
+    assert "python" in csv_text
