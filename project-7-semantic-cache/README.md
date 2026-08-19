@@ -10,8 +10,10 @@ A drop-in proxy that sits between your app and LLM providers, detects semantical
 cd project-7-semantic-cache
 uv venv && source .venv/bin/activate
 uv pip install -r requirements.txt
-cp .env.example .env   # OPENAI_API_KEY, REDIS_URL
+cp .env.example .env   # OPENAI_API_KEY (required); REDIS_URL (Phase 5)
 ```
+
+**Cache backend:** local dev uses an **in-memory** store (`MemoryCacheStore`) — fast for tests, resets on restart. Production target is **Redis + RedisVL** (`src/cache/redis_store.py`); wired via docker-compose in Phase 5.
 
 Phase 1+ commands:
 
@@ -39,4 +41,4 @@ grafana/            Dashboards
 
 ## Status
 
-See [`STATUS.md`](STATUS.md). Currently **Phase 0 — scaffold**.
+See [`STATUS.md`](STATUS.md). Currently **Phase 3 — cache policies**.

@@ -8,7 +8,7 @@
 | Field            | Value                         |
 | ---------------- | ----------------------------- |
 | **Phase**        | 3 — Cache Policies & Eviction |
-| **Next task**    | Phase 3.1 — TTL tiers         |
+| **Next task**    | Phase 3.2 — Invalidation      |
 | **Last updated** | 2026-08-19                    |
 
 ## Phase Checklist
@@ -24,12 +24,13 @@
 
 - [x] 2.1 Mirror OpenAI `/v1/chat/completions` contract (change base URL only)
 - [x] 2.2 `X-Cache: HIT|MISS` header on responses
-- [x] 2.3 Provider routing: OpenAI, Anthropic, Ollama by `model` field
+- [x] 2.3 OpenAI provider routing by `model` field
+- [ ] 2.3b Anthropic + Ollama adapters (currently 501 stubs)
 - [x] 2.4 Streaming: pass-through on miss, buffer complete response before caching
 
 ### Phase 3 — Cache Policies & Eviction (Day 5–8)
 
-- [ ] 3.1 TTL tiers (stable vs time-sensitive prompts; auto-classifier)
+- [x] 3.1 TTL tiers (stable vs time-sensitive prompts; auto-classifier)
 - [ ] 3.2 Invalidation: system-prompt hash change, model upgrade, manual by prefix/tag
 - [ ] 3.3 Threshold tuner endpoint (hit rate vs accuracy tradeoff visualization)
 - [ ] 3.4 Adaptive thresholds by request type (classification vs creative)
@@ -62,6 +63,11 @@ docs/ARCHITECTURE.md
 docs/SCHEMA.md
 requirements.txt
 .env.example
+src/cache/          embed, lookup, store, redis_store
+src/proxy/          app, schemas, streaming
+src/providers/      OpenAI adapter, router, fakes
+src/policies/       TTL tiers, invalidation (Phase 3)
+tests/              unit + proxy integration tests
 ```
 
 ## Decisions Log
@@ -70,7 +76,8 @@ requirements.txt
 | ---------- | ----------------------------------- | ---------------------------------------------- |
 | 2026-07-28 | Folder = `project-7-semantic-cache` | Matches monorepo naming + guide #7             |
 | 2026-07-28 | Vector store = Redis + RedisVL      | Guide default; sub-ms lookups, docker-friendly |
+| 2026-08-19 | Dev default = in-memory cache store | Fast local/tests; Redis wired in Phase 5       |
 
 ## Session Notes
 
-Phase 2 complete (proxy, cache headers, OpenAI routing, streaming pass-through). Next: Phase 3 TTL policies.
+Phase 3.1 done (TTL tier classifier + tiered cache expiry). Next: Phase 3.2 invalidation.

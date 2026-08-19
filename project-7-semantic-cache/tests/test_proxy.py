@@ -98,6 +98,22 @@ def test_stream_hit_after_non_stream_seed():
     assert fake.call_count == 1
 
 
+def test_non_stream_truncated_response_is_not_cached():
+    fake = FakeChatProvider(finish_reason="length")
+    cache = CacheService(MemoryCacheStore(), MockEmbedder())
+    app = create_app(cache=cache, router=ProviderRouter(openai=fake))
+    client = TestClient(app)
+
+    first = client.post("/v1/chat/completions", json=PAYLOAD)
+    second = client.post("/v1/chat/completions", json=PAYLOAD)
+
+    assert first.status_code == 200
+    assert first.headers["x-cache"] == "MISS"
+    assert second.status_code == 200
+    assert second.headers["x-cache"] == "MISS"
+    assert fake.call_count == 2
+
+
 def test_stream_miss_caches_for_non_stream_repeat():
     client, fake = make_client()
 

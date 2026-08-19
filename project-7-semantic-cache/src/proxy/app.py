@@ -14,6 +14,7 @@ from src.cache.lookup import DEFAULT_THRESHOLD
 from src.cache.namespace import build_namespace, extract_user_text
 from src.cache.store import CacheService, MemoryCacheStore
 from src.models.types import CacheNamespace, LookupStatus
+from src.policies.ttl import TTLPolicy
 from src.providers.router import ProviderRouter
 from src.proxy.schemas import ChatCompletionRequest
 from src.proxy.streaming import (
@@ -30,10 +31,6 @@ def _threshold() -> float:
     return float(os.getenv("CACHE_SIMILARITY_THRESHOLD", DEFAULT_THRESHOLD))
 
 
-def _ttl_seconds() -> int:
-    return int(os.getenv("CACHE_DEFAULT_TTL_SECONDS", "86400"))
-
-
 def _cache_hit_headers(similarity: float) -> dict[str, str]:
     return {
         "X-Cache": "HIT",
@@ -41,12 +38,40 @@ def _cache_hit_headers(similarity: float) -> dict[str, str]:
     }
 
 
+def _cache_miss_headers(prompt_text: str, *, ttl_policy: TTLPolicy) -> dict[str, str]:
+    tier = ttl_policy.tier_for(prompt_text)
+    return {
+        "X-Cache": "MISS",
+        "X-Cache-TTL-Tier": tier.value,
+    }
+
+
+def _should_cache_upstream(upstream: dict[str, Any]) -> bool:
+    choices = upstream.get("choices") or []
+    if not choices:
+        return False
+    choice = choices[0]
+    if choice.get("finish_reason") != "stop":
+        return False
+    message = choice.get("message") or {}
+    return bool(message.get("content"))
+
+
 def _store_upstream_response(
     cache_service: CacheService,
     namespace: CacheNamespace,
     prompt_text: str,
     upstream: dict[str, Any],
+    *,
+    ttl_policy: TTLPolicy,
 ) -> None:
+    if not _should_cache_upstream(upstream):
+        return
+
+    ttl_seconds = ttl_policy.ttl_seconds_for(prompt_text)
+    if ttl_seconds is None:
+        return
+
     usage = upstream.get("usage") or {}
     choices = upstream.get("choices") or [{}]
     finish_reason = choices[0].get("finish_reason") if choices else None
@@ -54,7 +79,7 @@ def _store_upstream_response(
         namespace,
         prompt_text,
         upstream,
-        ttl_seconds=_ttl_seconds(),
+        ttl_seconds=ttl_seconds,
         prompt_tokens=int(usage.get("prompt_tokens") or 0),
         completion_tokens=int(usage.get("completion_tokens") or 0),
         finish_reason=finish_reason,
@@ -65,6 +90,7 @@ def create_app(
     *,
     cache: CacheService | None = None,
     router: ProviderRouter | None = None,
+    ttl_policy: TTLPolicy | None = None,
 ) -> FastAPI:
     app = FastAPI(
         title="Semantic Cache Proxy",
@@ -73,6 +99,7 @@ def create_app(
     )
     app.state.cache = cache or CacheService(MemoryCacheStore(), OpenAIEmbedder())
     app.state.router = router or ProviderRouter()
+    app.state.ttl_policy = ttl_policy or TTLPolicy.from_env()
 
     @app.get("/health")
     def health() -> dict[str, str]:
@@ -82,6 +109,7 @@ def create_app(
     async def chat_completions(body: ChatCompletionRequest) -> Response:
         cache_service: CacheService = app.state.cache
         provider_router: ProviderRouter = app.state.router
+        ttl_policy: TTLPolicy = app.state.ttl_policy
         messages = body.as_message_dicts()
         namespace = build_namespace(
             messages,
@@ -90,6 +118,7 @@ def create_app(
             max_tokens=body.max_tokens,
         )
         prompt_text = extract_user_text(messages)
+        miss_headers = _cache_miss_headers(prompt_text, ttl_policy=ttl_policy)
         threshold = _threshold()
         cached = cache_service.get(namespace, prompt_text, threshold=threshold)
 
@@ -108,9 +137,10 @@ def create_app(
                     cache_service=cache_service,
                     namespace=namespace,
                     prompt_text=prompt_text,
+                    ttl_policy=ttl_policy,
                 ),
                 media_type="text/event-stream",
-                headers={"X-Cache": "MISS"},
+                headers=miss_headers,
             )
 
         if cached.status == LookupStatus.HIT and cached.entry is not None:
@@ -121,8 +151,14 @@ def create_app(
 
         provider = provider_router.resolve(body.model)
         upstream = await provider.chat_completion(body)
-        _store_upstream_response(cache_service, namespace, prompt_text, upstream)
-        return JSONResponse(content=upstream, headers={"X-Cache": "MISS"})
+        _store_upstream_response(
+            cache_service,
+            namespace,
+            prompt_text,
+            upstream,
+            ttl_policy=ttl_policy,
+        )
+        return JSONResponse(content=upstream, headers=miss_headers)
 
     return app
 
@@ -134,6 +170,7 @@ async def _stream_miss(
     cache_service: CacheService,
     namespace: CacheNamespace,
     prompt_text: str,
+    ttl_policy: TTLPolicy,
 ):
     content = ""
     finish_reason: str | None = None
@@ -158,7 +195,13 @@ async def _stream_miss(
             finish_reason=finish_reason,
             usage=usage,
         )
-        _store_upstream_response(cache_service, namespace, prompt_text, upstream)
+        _store_upstream_response(
+            cache_service,
+            namespace,
+            prompt_text,
+            upstream,
+            ttl_policy=ttl_policy,
+        )
 
 
 # Use: uvicorn src.proxy.app:create_app --factory --reload --port 8080

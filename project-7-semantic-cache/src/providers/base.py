@@ -20,8 +20,14 @@ class ChatProvider(Protocol):
 class FakeChatProvider:
     """Test double — returns a deterministic OpenAI-shaped response."""
 
-    def __init__(self, content: str = "Python is a programming language.") -> None:
+    def __init__(
+        self,
+        content: str = "Python is a programming language.",
+        *,
+        finish_reason: str = "stop",
+    ) -> None:
         self.content = content
+        self.finish_reason = finish_reason
         self.call_count = 0
         self.last_request: ChatCompletionRequest | None = None
 
@@ -68,7 +74,7 @@ class FakeChatProvider:
                 {
                     "index": 0,
                     "message": {"role": "assistant", "content": self.content},
-                    "finish_reason": "stop",
+                    "finish_reason": self.finish_reason,
                 }
             ],
             "usage": {"prompt_tokens": 12, "completion_tokens": 8, "total_tokens": 20},
