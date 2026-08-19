@@ -7,8 +7,8 @@
 
 | Field            | Value                                 |
 | ---------------- | ------------------------------------- |
-| **Phase**        | 5 — Containerize & Load Test          |
-| **Next task**    | Phase 5.1 — docker-compose full stack |
+| **Phase**        | 6 — Portfolio                         |
+| **Next task**    | Phase 6.1 — demo recording              |
 | **Last updated** | 2026-08-19                            |
 
 ## Phase Checklist
@@ -43,9 +43,9 @@
 
 ### Phase 5 — Containerize & Load Test (Day 10–12)
 
-- [ ] 5.1 docker-compose: proxy, Redis+RedisVL, Prometheus, Grafana, optional Ollama
-- [ ] 5.2 Load test: 2,000+ requests, mixed unique/repeated queries
-- [ ] 5.3 README as internal proposal (savings projection + deployment guide)
+- [x] 5.1 docker-compose: proxy, Redis+RedisVL, Prometheus, Grafana, optional Ollama
+- [x] 5.2 Load test: 2,000+ requests, mixed unique/repeated queries
+- [x] 5.3 README as internal proposal (savings projection + deployment guide)
 
 ### Phase 6 — Portfolio (Day 12–14)
 
@@ -63,12 +63,14 @@ docs/ARCHITECTURE.md
 docs/SCHEMA.md
 requirements.txt
 .env.example
-src/cache/          embed, lookup, store, redis_store
+src/cache/          embed, lookup, store, redis_store, factory
 src/proxy/          app, schemas, streaming
 src/providers/      OpenAI adapter, router, fakes
 src/policies/       TTL, invalidation, threshold tuner, adaptive thresholds
 src/metrics/        Prometheus instrumentation, near-miss log
+scripts/            load_test.py, seed_queries.json
 tests/              unit + proxy integration tests
+Dockerfile
 grafana/            dashboard + provisioning
 prometheus/         scrape config
 ```
@@ -83,4 +85,4 @@ prometheus/         scrape config
 
 ## Session Notes
 
-Phase 4 complete (Prometheus metrics, Grafana dashboard, near-miss export). Next: Phase 5 docker-compose full stack + load test.
+Phase 5 complete (docker-compose stack, Redis-backed proxy, load test script, README proposal). Next: Phase 6 demo + case study.

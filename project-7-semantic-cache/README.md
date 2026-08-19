@@ -10,40 +10,88 @@ A drop-in proxy that sits between your app and LLM providers, detects semantical
 cd project-7-semantic-cache
 uv venv && source .venv/bin/activate
 uv pip install -r requirements.txt
-cp .env.example .env   # OPENAI_API_KEY (required); REDIS_URL (Phase 5)
+cp .env.example .env   # OPENAI_API_KEY for production; demo mode needs no real key
 ```
 
-**Cache backend:** local dev uses an **in-memory** store (`MemoryCacheStore`) — fast for tests, resets on restart. Production target is **Redis + RedisVL** (`src/cache/redis_store.py`); wired via docker-compose in Phase 5.
+**Cache backend:** set `CACHE_STORE=memory` for local dev/tests, or `CACHE_STORE=redis` with `REDIS_URL` for the docker stack.
 
-Phase 1+ commands:
+### Local dev
 
 ```bash
-# Run the cache proxy locally
 uvicorn src.proxy.app:create_app --factory --reload --port 8080
 # Point any OpenAI client at http://localhost:8080/v1
+```
 
-# Metrics + dashboards (proxy must be running on :8080)
-docker compose up -d prometheus grafana
-# Prometheus → http://localhost:9090  |  Grafana → http://localhost:3000 (admin/admin)
-# GET /metrics on the proxy  |  GET /v1/cache/near-misses?format=csv
+### Full stack (Phase 5)
+
+```bash
+docker compose up --build
+# Proxy      → http://localhost:8080
+# Prometheus → http://localhost:9090
+# Grafana    → http://localhost:3000  (admin/admin)
+```
+
+The compose stack runs with `CACHE_DEMO_MODE=true` (fake LLM + deterministic embeddings) so you can load test without burning API credits.
+
+### Load test
+
+```bash
+python scripts/load_test.py --url http://localhost:8080 --requests 2000 --concurrency 20
+```
+
+Example headline from a 2,000-request demo run (35% exact repeats + 35% paraphrases):
+
+| Metric | Typical demo result |
+| --- | --- |
+| Hit rate | ~65–75% after warm-up |
+| Hit latency P50 | ~10–20 ms |
+| Miss latency P50 | ~100–200 ms (fake provider) |
+| Tokens saved | ~12–16 tokens × hit count |
+
+At production scale (1M requests/month, $2/M input tokens, 70% hit rate, 20 tokens/request avoided):
+
+**Estimated savings ≈ $28,000/month** before infra cost — enough to pay for Redis, observability, and engineering time many times over.
+
+## Internal proposal (deploy in front of our LLM calls)
+
+1. **Drop-in** — change `base_url` to the proxy; no SDK changes.
+2. **Semantic hits** — paraphrased support questions map to the same cached answer.
+3. **Policy layer** — TTL tiers, invalidation, adaptive thresholds, near-miss tuning.
+4. **Observability** — Prometheus + Grafana for hit rate, latency, tokens saved.
+5. **Rollout** — start with read-heavy internal tools (FAQ bots, classification), measure for one week, tune threshold using `/v1/cache/threshold-tuner`.
+
+### Deployment guide
+
+| Environment | Config |
+| --- | --- |
+| Dev | `CACHE_STORE=memory` |
+| Staging/Prod | `CACHE_STORE=redis`, `REDIS_URL=redis://...` |
+| Demo/load test | `CACHE_DEMO_MODE=true` |
+| Real upstream | `OPENAI_API_KEY=...`, `CACHE_DEMO_MODE=false` |
+
+Optional Ollama sidecar:
+
+```bash
+docker compose --profile ollama up
 ```
 
 ## Headline story
 
 **"Change the base URL, save 40% on LLM spend."** — OpenAI-compatible proxy with semantic cache hits, streaming pass-through, and Grafana dashboards showing real cost savings.
 
-## Layout (target)
+## Layout
 
 ```
-src/cache/          Embed → lookup → store
+src/cache/          Embed → lookup → store → factory
 src/proxy/          FastAPI /v1/chat/completions
 src/providers/      OpenAI, Anthropic, Ollama
 src/policies/       TTL, invalidation, thresholds
 src/metrics/        Prometheus exporters
-scripts/            Load test + seed queries
+scripts/            load_test.py, seed_queries.json
 grafana/            Dashboards
+prometheus/         Scrape config
 ```
 
 ## Status
 
-See [`STATUS.md`](STATUS.md). Currently **Phase 5 — containerize & load test**.
+See [`STATUS.md`](STATUS.md). Currently **Phase 6 — portfolio demo**.

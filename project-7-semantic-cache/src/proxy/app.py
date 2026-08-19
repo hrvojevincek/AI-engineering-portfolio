@@ -10,10 +10,10 @@ from fastapi import FastAPI, Header, Query
 from fastapi.responses import JSONResponse, PlainTextResponse, Response, StreamingResponse
 from prometheus_client import generate_latest
 
-from src.cache.embed import OpenAIEmbedder
+from src.cache.factory import create_cache_service, create_provider_router
 from src.cache.lookup import DEFAULT_THRESHOLD
 from src.cache.namespace import build_namespace, extract_user_text
-from src.cache.store import CacheService, MemoryCacheStore
+from src.cache.store import CacheService
 from src.metrics.near_miss import NearMissLog
 from src.metrics.prometheus import CacheMetrics
 from src.models.types import CacheNamespace, LookupResult, LookupStatus
@@ -238,8 +238,8 @@ def create_app(
         description="Drop-in OpenAI-compatible proxy with semantic response caching.",
         version="0.1.0",
     )
-    app.state.cache = cache or CacheService(MemoryCacheStore(), OpenAIEmbedder())
-    app.state.router = router or ProviderRouter()
+    app.state.cache = cache or create_cache_service()
+    app.state.router = router or create_provider_router()
     app.state.ttl_policy = ttl_policy or TTLPolicy.from_env()
     app.state.query_log = query_log or QueryLog()
     app.state.threshold_policy = threshold_policy or AdaptiveThresholdPolicy.from_env()

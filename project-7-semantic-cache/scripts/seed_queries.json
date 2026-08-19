@@ -1,0 +1,138 @@
+{
+  "system_prompt": "You are a helpful assistant.",
+  "model": "gpt-4o-mini",
+  "groups": [
+    [
+      "What is Python?",
+      "Explain Python to me",
+      "Tell me about the Python language",
+      "How would you describe Python?"
+    ],
+    [
+      "What is machine learning?",
+      "Explain machine learning",
+      "Define ML for me",
+      "How does machine learning work?"
+    ],
+    [
+      "What is Redis?",
+      "Explain Redis",
+      "Tell me about Redis caching",
+      "Why use Redis?"
+    ],
+    [
+      "What is Docker?",
+      "Explain Docker containers",
+      "How does Docker work?",
+      "Why use Docker?"
+    ],
+    [
+      "What is FastAPI?",
+      "Explain FastAPI",
+      "Tell me about FastAPI",
+      "Why choose FastAPI?"
+    ],
+    [
+      "What is semantic caching?",
+      "Explain semantic cache",
+      "How does semantic caching work?",
+      "Why use a semantic cache?"
+    ],
+    [
+      "What is cosine similarity?",
+      "Explain cosine similarity",
+      "How is cosine similarity used?",
+      "Define cosine similarity"
+    ],
+    [
+      "What is Prometheus?",
+      "Explain Prometheus monitoring",
+      "How does Prometheus work?",
+      "Why use Prometheus?"
+    ],
+    [
+      "What is Grafana?",
+      "Explain Grafana dashboards",
+      "How do you use Grafana?",
+      "Why use Grafana?"
+    ],
+    [
+      "What is an LLM proxy?",
+      "Explain an LLM proxy layer",
+      "Why put a proxy in front of LLMs?",
+      "How does an LLM proxy help?"
+    ],
+    [
+      "What is token usage?",
+      "Explain LLM tokens",
+      "How are tokens counted?",
+      "Why do tokens matter for cost?"
+    ],
+    [
+      "What is cache invalidation?",
+      "Explain cache invalidation",
+      "When should cache entries expire?",
+      "How do you invalidate a cache?"
+    ],
+    [
+      "What is a cache hit rate?",
+      "Explain cache hit ratio",
+      "How is hit rate calculated?",
+      "Why does hit rate matter?"
+    ],
+    [
+      "What is P95 latency?",
+      "Explain latency percentiles",
+      "What does P95 mean?",
+      "Why track P95 latency?"
+    ],
+    [
+      "What is OpenAI embeddings?",
+      "Explain text embeddings",
+      "How are embeddings used for search?",
+      "Why embed prompts?"
+    ],
+    [
+      "What is a vector database?",
+      "Explain vector search",
+      "How do vector stores work?",
+      "Why use vectors for cache lookup?"
+    ],
+    [
+      "What is TTL in caching?",
+      "Explain time to live",
+      "How do TTL tiers work?",
+      "Why set cache TTL?"
+    ],
+    [
+      "What is a near miss?",
+      "Explain near-miss cache lookups",
+      "What happens below the similarity threshold?",
+      "Why log near misses?"
+    ],
+    [
+      "What is load testing?",
+      "Explain load test methodology",
+      "Why run a load test?",
+      "How do you measure cache under load?"
+    ],
+    [
+      "What is cost per token?",
+      "Explain LLM pricing",
+      "How do you estimate API spend?",
+      "Why track tokens saved?"
+    ]
+  ],
+  "unique_queries": [
+    "Summarize the history of computing in one paragraph.",
+    "Write a haiku about distributed systems.",
+    "List three differences between SQL and NoSQL.",
+    "What are the CAP theorem tradeoffs?",
+    "Explain eventual consistency simply.",
+    "Give me five tips for writing clean Python.",
+    "How do you debug a failing CI pipeline?",
+    "What makes a good README?",
+    "Describe blue-green deployment.",
+    "What is observability vs monitoring?"
+  ]
+}

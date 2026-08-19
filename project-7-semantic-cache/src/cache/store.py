@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+from typing import Protocol
+
 from src.cache.embed import Embedder
 from src.cache.lookup import DEFAULT_THRESHOLD, VectorCandidate, find_best_match, lookup
 from src.models.types import CacheEntry, CacheNamespace, LookupResult, LookupStatus
@@ -36,6 +38,31 @@ def build_entry(
         finish_reason=finish_reason,
         tags=tags or [],
     )
+
+
+class CacheStore(Protocol):
+    def store(self, entry: CacheEntry) -> str: ...
+
+    def find_best_match(
+        self,
+        namespace: CacheNamespace,
+        query_embedding: list[float],
+        *,
+        now: datetime | None = None,
+    ) -> tuple[float | None, CacheEntry | None]: ...
+
+    def lookup(
+        self,
+        namespace: CacheNamespace,
+        query_embedding: list[float],
+        *,
+        threshold: float = DEFAULT_THRESHOLD,
+        now: datetime | None = None,
+    ) -> LookupResult: ...
+
+    def invalidate(self, by: InvalidateBy, value: str) -> int: ...
+
+    def count_active(self, now: datetime | None = None) -> int: ...
 
 
 class MemoryCacheStore:
@@ -128,7 +155,7 @@ class MemoryCacheStore:
 class CacheService:
     """High-level get/put using an embedder + store."""
 
-    def __init__(self, store: MemoryCacheStore, embedder: Embedder) -> None:
+    def __init__(self, store: CacheStore, embedder: Embedder) -> None:
         self.store = store
         self.embedder = embedder
 
