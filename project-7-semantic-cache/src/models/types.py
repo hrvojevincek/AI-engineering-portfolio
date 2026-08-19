@@ -1,6 +1,9 @@
+from datetime import datetime
 from enum import Enum
+from typing import Any
+from uuid import uuid4
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Provider(str, Enum):
@@ -34,5 +37,24 @@ class CacheNamespace(BaseModel):
 class LookupResult(BaseModel):
     status: LookupStatus
     similarity: float | None = None
-    entry_id: str | None = None  # CacheEntry.id once storage lands in 1.3
+    entry_id: str | None = None
+    entry: "CacheEntry | None" = None
     threshold: float
+
+
+class CacheEntry(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid4()))
+    namespace: CacheNamespace
+    prompt_text: str
+    embedding: list[float]
+    response: dict[str, Any]
+    created_at: datetime
+    expires_at: datetime
+    hit_count: int = 0
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    finish_reason: str | None = None
+
+    def is_expired(self, now: datetime | None = None) -> bool:
+        now = now or datetime.now(timezone.utc)
+        return now >= self.expires_at

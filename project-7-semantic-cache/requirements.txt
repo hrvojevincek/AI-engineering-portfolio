@@ -4,10 +4,8 @@ python-dotenv>=1.0
 openai>=1.0
 httpx>=0.27
 pytest>=8.0
-
-# Phase 1 — cache index (uncomment as we implement)
-# redis>=5.0
-# redisvl>=0.3
+redis>=5.0
+redisvl>=0.3
 
 # Phase 2 — proxy
 # fastapi>=0.110

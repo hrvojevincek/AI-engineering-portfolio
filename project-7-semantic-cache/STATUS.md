@@ -8,7 +8,7 @@
 | Field            | Value                                     |
 | ---------------- | ----------------------------------------- |
 | **Phase**        | 1 — Cache Index                           |
-| **Next task**    | Phase 1.3 — Cache storage (Redis + embed) |
+| **Next task**    | Phase 1.4 — Param isolation integration tests |
 | **Blockers**     | None                                      |
 | **Last updated** | 2026-08-19                                |
 
@@ -18,8 +18,8 @@
 
 - [x] 1.1 Cache key: embed prompt + hash system prompt + generation params
 - [x] 1.2 Similarity lookup: cosine threshold (start 0.95) → hit or miss
-- [ ] 1.3 Cache storage: response + metadata (TTL, hit count, tokens, model)
-- [ ] 1.4 Param isolation: different system prompt / temp / model → separate entries
+- [x] 1.3 Cache storage: response + metadata (TTL, hit count, tokens, model)
+- [x] 1.4 Param isolation: different system prompt / temp / model → separate entries
 
 ### Phase 2 — Drop-In Proxy API (Day 3–5)
 
@@ -74,4 +74,4 @@ requirements.txt
 
 ## Session Notes
 
-Phase 1.2 done (similarity + lookup tests pass). Next: embed + Redis storage.
+Phase 1 complete (namespace, lookup, in-memory store + Redis store). Next: Phase 2 proxy API.
