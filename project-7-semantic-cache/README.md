@@ -13,7 +13,13 @@ uv pip install -r requirements.txt
 cp .env.example .env   # OPENAI_API_KEY, REDIS_URL
 ```
 
-Phase 1+ commands will land here as we build.
+Phase 1+ commands:
+
+```bash
+# Run the cache proxy locally
+uvicorn src.proxy.app:create_app --factory --reload --port 8080
+# Point any OpenAI client at http://localhost:8080/v1
+```
 
 ## Headline story
 

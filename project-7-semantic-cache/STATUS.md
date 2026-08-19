@@ -5,12 +5,11 @@
 
 ## Snapshot
 
-| Field            | Value                                     |
-| ---------------- | ----------------------------------------- |
-| **Phase**        | 1 — Cache Index                           |
-| **Next task**    | Phase 1.4 — Param isolation integration tests |
-| **Blockers**     | None                                      |
-| **Last updated** | 2026-08-19                                |
+| Field            | Value                         |
+| ---------------- | ----------------------------- |
+| **Phase**        | 3 — Cache Policies & Eviction |
+| **Next task**    | Phase 3.1 — TTL tiers         |
+| **Last updated** | 2026-08-19                    |
 
 ## Phase Checklist
 
@@ -23,10 +22,10 @@
 
 ### Phase 2 — Drop-In Proxy API (Day 3–5)
 
-- [ ] 2.1 Mirror OpenAI `/v1/chat/completions` contract (change base URL only)
-- [ ] 2.2 `X-Cache: HIT|MISS` header on responses
-- [ ] 2.3 Provider routing: OpenAI, Anthropic, Ollama by `model` field
-- [ ] 2.4 Streaming: pass-through on miss, buffer complete response before caching
+- [x] 2.1 Mirror OpenAI `/v1/chat/completions` contract (change base URL only)
+- [x] 2.2 `X-Cache: HIT|MISS` header on responses
+- [x] 2.3 Provider routing: OpenAI, Anthropic, Ollama by `model` field
+- [x] 2.4 Streaming: pass-through on miss, buffer complete response before caching
 
 ### Phase 3 — Cache Policies & Eviction (Day 5–8)
 
@@ -74,4 +73,4 @@ requirements.txt
 
 ## Session Notes
 
-Phase 1 complete (namespace, lookup, in-memory store + Redis store). Next: Phase 2 proxy API.
+Phase 2 complete (proxy, cache headers, OpenAI routing, streaming pass-through). Next: Phase 3 TTL policies.
