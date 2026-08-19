@@ -9,6 +9,12 @@ class Provider(str, Enum):
     OLLAMA = "ollama"
 
 
+class LookupStatus(str, Enum):
+    HIT = "HIT"
+    MISS = "MISS"
+    NEAR_MISS = "NEAR_MISS"
+
+
 class CacheNamespace(BaseModel):
     """Scopes vector search — same user text in different namespaces = different cache."""
 
@@ -23,3 +29,10 @@ class CacheNamespace(BaseModel):
         temp = "none" if self.temperature is None else str(self.temperature)
         tokens = "none" if self.max_tokens is None else str(self.max_tokens)
         return f"{self.provider.value}:{self.model}:{self.system_prompt_hash}:{temp}:{tokens}"
+
+
+class LookupResult(BaseModel):
+    status: LookupStatus
+    similarity: float | None = None
+    entry_id: str | None = None  # CacheEntry.id once storage lands in 1.3
+    threshold: float

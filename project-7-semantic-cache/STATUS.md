@@ -5,19 +5,19 @@
 
 ## Snapshot
 
-| Field            | Value                                |
-| ---------------- | ------------------------------------ |
-| **Phase**        | 1 — Cache Index                      |
-| **Next task**    | Phase 1.1 — Implement `namespace.py` |
-| **Blockers**     | None                                 |
-| **Last updated** | 2026-07-28                           |
+| Field            | Value                                     |
+| ---------------- | ----------------------------------------- |
+| **Phase**        | 1 — Cache Index                           |
+| **Next task**    | Phase 1.3 — Cache storage (Redis + embed) |
+| **Blockers**     | None                                      |
+| **Last updated** | 2026-08-19                                |
 
 ## Phase Checklist
 
 ### Phase 1 — Cache Index & Similarity Engine (Day 1–3)
 
-- [ ] 1.1 Cache key: embed prompt + hash system prompt + generation params
-- [ ] 1.2 Similarity lookup: cosine threshold (start 0.95) → hit or miss
+- [x] 1.1 Cache key: embed prompt + hash system prompt + generation params
+- [x] 1.2 Similarity lookup: cosine threshold (start 0.95) → hit or miss
 - [ ] 1.3 Cache storage: response + metadata (TTL, hit count, tokens, model)
 - [ ] 1.4 Param isolation: different system prompt / temp / model → separate entries
 
@@ -74,4 +74,4 @@ requirements.txt
 
 ## Session Notes
 
-Phase 1 started. Stubs in `src/cache/namespace.py` + `src/models/types.py`. Implement 1.1, run pytest.
+Phase 1.2 done (similarity + lookup tests pass). Next: embed + Redis storage.

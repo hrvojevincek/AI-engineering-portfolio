@@ -39,7 +39,7 @@ def extract_user_text(messages: list[dict[str, Any]]) -> str:
 def infer_provider(model: str) -> Provider:
     """Rough model → provider mapping for V1."""
     name = model.lower()
-    if name.startswith("gtp-"):
+    if name.startswith("gpt-"):
         return Provider.OPENAI
     elif name.startswith("claude-"):
         return Provider.ANTHROPIC
