@@ -21,6 +21,11 @@ Phase 1+ commands:
 # Run the cache proxy locally
 uvicorn src.proxy.app:create_app --factory --reload --port 8080
 # Point any OpenAI client at http://localhost:8080/v1
+
+# Metrics + dashboards (proxy must be running on :8080)
+docker compose up -d prometheus grafana
+# Prometheus → http://localhost:9090  |  Grafana → http://localhost:3000 (admin/admin)
+# GET /metrics on the proxy  |  GET /v1/cache/near-misses?format=csv
 ```
 
 ## Headline story
@@ -41,4 +46,4 @@ grafana/            Dashboards
 
 ## Status
 
-See [`STATUS.md`](STATUS.md). Currently **Phase 4 — monitoring & analytics**.
+See [`STATUS.md`](STATUS.md). Currently **Phase 5 — containerize & load test**.

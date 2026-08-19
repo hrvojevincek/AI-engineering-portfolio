@@ -31,6 +31,7 @@ class MockEmbedder:
     PHRASE_VECTORS: dict[str, list[float]] = {
         "what is python?": [1.0, 0.0, 0.0],
         "explain python to me": [0.99, 0.01, 0.0],
+        "tell me about python": [0.93, 0.37, 0.0],
         "what is java?": [0.0, 1.0, 0.0],
     }
 

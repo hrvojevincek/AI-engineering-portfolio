@@ -12,4 +12,4 @@ fastapi>=0.110
 uvicorn>=0.27
 
 # Phase 4 — metrics
-# prometheus-client>=0.20
+prometheus-client>=0.20

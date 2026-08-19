@@ -120,6 +120,10 @@ class MemoryCacheStore:
             del self._entries[entry_id]
         return len(to_delete)
 
+    def count_active(self, now: datetime | None = None) -> int:
+        now = now or datetime.now(timezone.utc)
+        return sum(1 for entry in self._entries.values() if not entry.is_expired(now))
+
 
 class CacheService:
     """High-level get/put using an embedder + store."""
@@ -176,3 +180,6 @@ class CacheService:
 
     def invalidate(self, by: InvalidateBy, value: str) -> int:
         return self.store.invalidate(by, value)
+
+    def active_entry_count(self) -> int:
+        return self.store.count_active()

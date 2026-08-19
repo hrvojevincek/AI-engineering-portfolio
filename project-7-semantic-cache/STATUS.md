@@ -5,11 +5,11 @@
 
 ## Snapshot
 
-| Field            | Value                         |
-| ---------------- | ----------------------------- |
-| **Phase**        | 4 — Monitoring & Analytics    |
-| **Next task**    | Phase 4.1 — Prometheus metrics |
-| **Last updated** | 2026-08-19                    |
+| Field            | Value                                 |
+| ---------------- | ------------------------------------- |
+| **Phase**        | 5 — Containerize & Load Test          |
+| **Next task**    | Phase 5.1 — docker-compose full stack |
+| **Last updated** | 2026-08-19                            |
 
 ## Phase Checklist
 
@@ -37,9 +37,9 @@
 
 ### Phase 4 — Monitoring & Analytics (Day 8–10)
 
-- [ ] 4.1 Prometheus metrics: hit rate, latency, cost savings, similarity distribution
-- [ ] 4.2 Grafana dashboard (hit rate, savings, P50/P95 latency, capacity)
-- [ ] 4.3 Near-miss analyzer (queries just below threshold)
+- [x] 4.1 Prometheus metrics: hit rate, latency, cost savings, similarity distribution
+- [x] 4.2 Grafana dashboard (hit rate, savings, P50/P95 latency, capacity)
+- [x] 4.3 Near-miss analyzer (queries just below threshold)
 
 ### Phase 5 — Containerize & Load Test (Day 10–12)
 
@@ -67,7 +67,10 @@ src/cache/          embed, lookup, store, redis_store
 src/proxy/          app, schemas, streaming
 src/providers/      OpenAI adapter, router, fakes
 src/policies/       TTL, invalidation, threshold tuner, adaptive thresholds
+src/metrics/        Prometheus instrumentation, near-miss log
 tests/              unit + proxy integration tests
+grafana/            dashboard + provisioning
+prometheus/         scrape config
 ```
 
 ## Decisions Log
@@ -80,4 +83,4 @@ tests/              unit + proxy integration tests
 
 ## Session Notes
 
-Phase 3 complete (TTL tiers, invalidation, threshold tuner, adaptive thresholds). Next: Phase 4 Prometheus metrics.
+Phase 4 complete (Prometheus metrics, Grafana dashboard, near-miss export). Next: Phase 5 docker-compose full stack + load test.

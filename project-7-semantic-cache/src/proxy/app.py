@@ -2,16 +2,20 @@
 
 from __future__ import annotations
 
+import time
 from typing import Any
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Header
-from fastapi.responses import JSONResponse, Response, StreamingResponse
+from fastapi import FastAPI, Header, Query
+from fastapi.responses import JSONResponse, PlainTextResponse, Response, StreamingResponse
+from prometheus_client import generate_latest
 
 from src.cache.embed import OpenAIEmbedder
 from src.cache.lookup import DEFAULT_THRESHOLD
 from src.cache.namespace import build_namespace, extract_user_text
 from src.cache.store import CacheService, MemoryCacheStore
+from src.metrics.near_miss import NearMissLog
+from src.metrics.prometheus import CacheMetrics
 from src.models.types import CacheNamespace, LookupResult, LookupStatus
 from src.policies.adaptive_threshold import AdaptiveThresholdPolicy
 from src.policies.query_log import QueryLog, QueryRecord
@@ -88,12 +92,48 @@ def _parse_cache_tags(raw: str | None) -> list[str]:
     return [tag.strip() for tag in raw.split(",") if tag.strip()]
 
 
-def _log_query(
-    query_log: QueryLog,
+def _tokens_saved(entry: LookupResult) -> int:
+    if entry.entry is None:
+        return 0
+    return entry.entry.prompt_tokens + entry.entry.completion_tokens
+
+
+def _refresh_entry_gauge(cache_service: CacheService, metrics: CacheMetrics) -> None:
+    metrics.set_active_entries(cache_service.active_entry_count())
+
+
+def _record_near_miss(
+    *,
+    near_miss_log: NearMissLog,
+    metrics: CacheMetrics,
+    model: str,
+    prompt_text: str,
+    cached: LookupResult,
+    threshold: float,
+    matched_prompt: str | None,
+) -> None:
+    if cached.status != LookupStatus.NEAR_MISS or cached.similarity is None:
+        return
+    near_miss_log.append(
+        query_text=prompt_text,
+        model=model,
+        best_similarity=cached.similarity,
+        threshold=threshold,
+        matched_prompt_text=matched_prompt,
+    )
+    metrics.record_near_miss(model=model, similarity=cached.similarity)
+
+
+def _perform_lookup(
     cache_service: CacheService,
     namespace: CacheNamespace,
     prompt_text: str,
-) -> None:
+    *,
+    threshold: float | None,
+    query_log: QueryLog,
+    metrics: CacheMetrics,
+) -> tuple[LookupResult, float | None]:
+    lookup_started = time.perf_counter()
     similarity, matched_prompt = cache_service.peek(namespace, prompt_text)
     query_log.append(
         namespace,
@@ -101,6 +141,55 @@ def _log_query(
         best_similarity=similarity,
         matched_prompt_text=matched_prompt,
     )
+    if threshold is None:
+        cached = LookupResult(
+            status=LookupStatus.MISS,
+            similarity=None,
+            entry_id=None,
+            entry=None,
+            threshold=DEFAULT_THRESHOLD,
+        )
+    else:
+        cached = cache_service.get(namespace, prompt_text, threshold=threshold)
+    metrics.record_lookup(latency_seconds=time.perf_counter() - lookup_started)
+    return cached, matched_prompt
+
+
+def _store_upstream_response(
+    cache_service: CacheService,
+    namespace: CacheNamespace,
+    prompt_text: str,
+    upstream: dict[str, Any],
+    *,
+    ttl_policy: TTLPolicy,
+    cache_tags: list[str] | None = None,
+    threshold_policy: AdaptiveThresholdPolicy,
+    metrics: CacheMetrics | None = None,
+) -> None:
+    if not threshold_policy.caching_enabled_for(prompt_text):
+        return
+    if not _should_cache_upstream(upstream):
+        return
+
+    ttl_seconds = ttl_policy.ttl_seconds_for(prompt_text)
+    if ttl_seconds is None:
+        return
+
+    usage = upstream.get("usage") or {}
+    choices = upstream.get("choices") or [{}]
+    finish_reason = choices[0].get("finish_reason") if choices else None
+    cache_service.put(
+        namespace,
+        prompt_text,
+        upstream,
+        ttl_seconds=ttl_seconds,
+        prompt_tokens=int(usage.get("prompt_tokens") or 0),
+        completion_tokens=int(usage.get("completion_tokens") or 0),
+        finish_reason=finish_reason,
+        tags=cache_tags,
+    )
+    if metrics is not None:
+        _refresh_entry_gauge(cache_service, metrics)
 
 
 def _records_for_tuner(
@@ -134,40 +223,6 @@ def _records_for_tuner(
     return query_log.records()
 
 
-def _store_upstream_response(
-    cache_service: CacheService,
-    namespace: CacheNamespace,
-    prompt_text: str,
-    upstream: dict[str, Any],
-    *,
-    ttl_policy: TTLPolicy,
-    cache_tags: list[str] | None = None,
-    threshold_policy: AdaptiveThresholdPolicy,
-) -> None:
-    if not threshold_policy.caching_enabled_for(prompt_text):
-        return
-    if not _should_cache_upstream(upstream):
-        return
-
-    ttl_seconds = ttl_policy.ttl_seconds_for(prompt_text)
-    if ttl_seconds is None:
-        return
-
-    usage = upstream.get("usage") or {}
-    choices = upstream.get("choices") or [{}]
-    finish_reason = choices[0].get("finish_reason") if choices else None
-    cache_service.put(
-        namespace,
-        prompt_text,
-        upstream,
-        ttl_seconds=ttl_seconds,
-        prompt_tokens=int(usage.get("prompt_tokens") or 0),
-        completion_tokens=int(usage.get("completion_tokens") or 0),
-        finish_reason=finish_reason,
-        tags=cache_tags,
-    )
-
-
 def create_app(
     *,
     cache: CacheService | None = None,
@@ -175,6 +230,8 @@ def create_app(
     ttl_policy: TTLPolicy | None = None,
     query_log: QueryLog | None = None,
     threshold_policy: AdaptiveThresholdPolicy | None = None,
+    metrics: CacheMetrics | None = None,
+    near_miss_log: NearMissLog | None = None,
 ) -> FastAPI:
     app = FastAPI(
         title="Semantic Cache Proxy",
@@ -186,15 +243,35 @@ def create_app(
     app.state.ttl_policy = ttl_policy or TTLPolicy.from_env()
     app.state.query_log = query_log or QueryLog()
     app.state.threshold_policy = threshold_policy or AdaptiveThresholdPolicy.from_env()
+    app.state.metrics = metrics or CacheMetrics()
+    app.state.near_miss_log = near_miss_log or NearMissLog()
+    _refresh_entry_gauge(app.state.cache, app.state.metrics)
 
     @app.get("/health")
     def health() -> dict[str, str]:
         return {"status": "ok"}
 
+    @app.get("/metrics")
+    def prometheus_metrics() -> PlainTextResponse:
+        cache_metrics: CacheMetrics = app.state.metrics
+        _refresh_entry_gauge(app.state.cache, cache_metrics)
+        payload = generate_latest(cache_metrics.registry)
+        return PlainTextResponse(
+            content=payload, media_type="text/plain; version=0.0.4; charset=utf-8"
+        )
+
+    @app.get("/v1/cache/near-misses")
+    def near_misses(format: str = Query(default="json")) -> Response:
+        log: NearMissLog = app.state.near_miss_log
+        if format == "csv":
+            return PlainTextResponse(content=log.to_csv(), media_type="text/csv")
+        return JSONResponse(content={"count": len(log.entries()), "near_misses": log.to_dicts()})
+
     @app.post("/v1/cache/invalidate")
     def invalidate_cache(body: InvalidateRequest) -> InvalidateResponse:
         cache_service: CacheService = app.state.cache
         deleted = cache_service.invalidate(body.by, body.value)
+        _refresh_entry_gauge(cache_service, app.state.metrics)
         return InvalidateResponse(deleted=deleted, by=body.by, value=body.value)
 
     @app.post("/v1/cache/threshold-tuner")
@@ -222,11 +299,14 @@ def create_app(
         body: ChatCompletionRequest,
         x_cache_tags: str | None = Header(default=None, alias="X-Cache-Tags"),
     ) -> Response:
+        request_started = time.perf_counter()
         cache_service: CacheService = app.state.cache
         provider_router: ProviderRouter = app.state.router
         ttl_policy: TTLPolicy = app.state.ttl_policy
         query_log: QueryLog = app.state.query_log
         threshold_policy: AdaptiveThresholdPolicy = app.state.threshold_policy
+        cache_metrics: CacheMetrics = app.state.metrics
+        near_miss_log: NearMissLog = app.state.near_miss_log
         messages = body.as_message_dicts()
         namespace = build_namespace(
             messages,
@@ -242,20 +322,33 @@ def create_app(
             threshold_policy=threshold_policy,
         )
         threshold = threshold_policy.threshold_for(prompt_text)
-        _log_query(query_log, cache_service, namespace, prompt_text)
-        if threshold is None:
-            cached = LookupResult(
-                status=LookupStatus.MISS,
-                similarity=None,
-                entry_id=None,
-                entry=None,
-                threshold=DEFAULT_THRESHOLD,
+        cached, matched_prompt = _perform_lookup(
+            cache_service,
+            namespace,
+            prompt_text,
+            threshold=threshold,
+            query_log=query_log,
+            metrics=cache_metrics,
+        )
+        if threshold is not None:
+            _record_near_miss(
+                near_miss_log=near_miss_log,
+                metrics=cache_metrics,
+                model=body.model,
+                prompt_text=prompt_text,
+                cached=cached,
+                threshold=threshold,
+                matched_prompt=matched_prompt,
             )
-        else:
-            cached = cache_service.get(namespace, prompt_text, threshold=threshold)
 
         if body.stream:
             if cached.status == LookupStatus.HIT and cached.entry is not None:
+                cache_metrics.record_hit(
+                    model=body.model,
+                    similarity=cached.similarity or 0.0,
+                    tokens_saved=_tokens_saved(cached),
+                    request_latency_seconds=time.perf_counter() - request_started,
+                )
                 return StreamingResponse(
                     stream_cached_entry(cached.entry),
                     media_type="text/event-stream",
@@ -265,6 +358,11 @@ def create_app(
                         prompt_text=prompt_text,
                     ),
                 )
+            cache_metrics.record_miss(
+                model=body.model,
+                similarity=cached.similarity,
+                request_latency_seconds=time.perf_counter() - request_started,
+            )
             provider = provider_router.resolve(body.model)
             return StreamingResponse(
                 _stream_miss(
@@ -276,12 +374,19 @@ def create_app(
                     ttl_policy=ttl_policy,
                     cache_tags=cache_tags,
                     threshold_policy=threshold_policy,
+                    metrics=cache_metrics,
                 ),
                 media_type="text/event-stream",
                 headers=miss_headers,
             )
 
         if cached.status == LookupStatus.HIT and cached.entry is not None:
+            cache_metrics.record_hit(
+                model=body.model,
+                similarity=cached.similarity or 0.0,
+                tokens_saved=_tokens_saved(cached),
+                request_latency_seconds=time.perf_counter() - request_started,
+            )
             return JSONResponse(
                 content=cached.entry.response,
                 headers=_cache_hit_headers(
@@ -301,6 +406,12 @@ def create_app(
             ttl_policy=ttl_policy,
             cache_tags=cache_tags,
             threshold_policy=threshold_policy,
+            metrics=cache_metrics,
+        )
+        cache_metrics.record_miss(
+            model=body.model,
+            similarity=cached.similarity,
+            request_latency_seconds=time.perf_counter() - request_started,
         )
         return JSONResponse(content=upstream, headers=miss_headers)
 
@@ -317,6 +428,7 @@ async def _stream_miss(
     ttl_policy: TTLPolicy,
     cache_tags: list[str] | None = None,
     threshold_policy: AdaptiveThresholdPolicy,
+    metrics: CacheMetrics | None = None,
 ):
     content = ""
     finish_reason: str | None = None
@@ -349,6 +461,7 @@ async def _stream_miss(
             ttl_policy=ttl_policy,
             cache_tags=cache_tags,
             threshold_policy=threshold_policy,
+            metrics=metrics,
         )
 
 
