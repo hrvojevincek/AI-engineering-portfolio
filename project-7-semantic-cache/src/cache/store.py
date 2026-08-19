@@ -5,8 +5,9 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 
 from src.cache.embed import Embedder
-from src.cache.lookup import DEFAULT_THRESHOLD, VectorCandidate, lookup
+from src.cache.lookup import DEFAULT_THRESHOLD, VectorCandidate, find_best_match, lookup
 from src.models.types import CacheEntry, CacheNamespace, LookupResult, LookupStatus
+from src.policies.invalidation import InvalidateBy, entry_matches
 
 
 def build_entry(
@@ -19,6 +20,7 @@ def build_entry(
     prompt_tokens: int = 0,
     completion_tokens: int = 0,
     finish_reason: str | None = None,
+    tags: list[str] | None = None,
     now: datetime | None = None,
 ) -> CacheEntry:
     now = now or datetime.now(timezone.utc)
@@ -32,6 +34,7 @@ def build_entry(
         prompt_tokens=prompt_tokens,
         completion_tokens=completion_tokens,
         finish_reason=finish_reason,
+        tags=tags or [],
     )
 
 
@@ -58,6 +61,20 @@ class MemoryCacheStore:
                 continue
             candidates.append(VectorCandidate(entry_id=entry.id, embedding=entry.embedding))
         return candidates
+
+    def find_best_match(
+        self,
+        namespace: CacheNamespace,
+        query_embedding: list[float],
+        *,
+        now: datetime | None = None,
+    ) -> tuple[float | None, CacheEntry | None]:
+        now = now or datetime.now(timezone.utc)
+        candidates = self._active_candidates(namespace, now)
+        best, score = find_best_match(query_embedding, candidates)
+        if best is None:
+            return None, None
+        return score, self._entries[best.entry_id]
 
     def lookup(
         self,
@@ -93,6 +110,16 @@ class MemoryCacheStore:
             threshold=result.threshold,
         )
 
+    def invalidate(self, by: InvalidateBy, value: str) -> int:
+        to_delete = [
+            entry_id
+            for entry_id, entry in self._entries.items()
+            if entry_matches(entry, by, value)
+        ]
+        for entry_id in to_delete:
+            del self._entries[entry_id]
+        return len(to_delete)
+
 
 class CacheService:
     """High-level get/put using an embedder + store."""
@@ -111,6 +138,7 @@ class CacheService:
         prompt_tokens: int = 0,
         completion_tokens: int = 0,
         finish_reason: str | None = None,
+        tags: list[str] | None = None,
     ) -> str:
         embedding = self.embedder.embed(prompt_text)
         entry = build_entry(
@@ -122,8 +150,19 @@ class CacheService:
             prompt_tokens=prompt_tokens,
             completion_tokens=completion_tokens,
             finish_reason=finish_reason,
+            tags=tags,
         )
         return self.store.store(entry)
+
+    def peek(
+        self,
+        namespace: CacheNamespace,
+        prompt_text: str,
+    ) -> tuple[float | None, str | None]:
+        embedding = self.embedder.embed(prompt_text)
+        similarity, entry = self.store.find_best_match(namespace, embedding)
+        matched_prompt = entry.prompt_text if entry else None
+        return similarity, matched_prompt
 
     def get(
         self,
@@ -134,3 +173,6 @@ class CacheService:
     ) -> LookupResult:
         embedding = self.embedder.embed(prompt_text)
         return self.store.lookup(namespace, embedding, threshold=threshold)
+
+    def invalidate(self, by: InvalidateBy, value: str) -> int:
+        return self.store.invalidate(by, value)

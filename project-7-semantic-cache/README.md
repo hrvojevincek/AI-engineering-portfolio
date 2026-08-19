@@ -41,4 +41,4 @@ grafana/            Dashboards
 
 ## Status
 
-See [`STATUS.md`](STATUS.md). Currently **Phase 3 — cache policies**.
+See [`STATUS.md`](STATUS.md). Currently **Phase 4 — monitoring & analytics**.

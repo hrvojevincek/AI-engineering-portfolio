@@ -54,6 +54,7 @@ class CacheEntry(BaseModel):
     prompt_tokens: int = 0
     completion_tokens: int = 0
     finish_reason: str | None = None
+    tags: list[str] = Field(default_factory=list)
 
     def is_expired(self, now: datetime | None = None) -> bool:
         now = now or datetime.now(timezone.utc)

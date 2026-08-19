@@ -7,8 +7,8 @@
 
 | Field            | Value                         |
 | ---------------- | ----------------------------- |
-| **Phase**        | 3 — Cache Policies & Eviction |
-| **Next task**    | Phase 3.2 — Invalidation      |
+| **Phase**        | 4 — Monitoring & Analytics    |
+| **Next task**    | Phase 4.1 — Prometheus metrics |
 | **Last updated** | 2026-08-19                    |
 
 ## Phase Checklist
@@ -31,9 +31,9 @@
 ### Phase 3 — Cache Policies & Eviction (Day 5–8)
 
 - [x] 3.1 TTL tiers (stable vs time-sensitive prompts; auto-classifier)
-- [ ] 3.2 Invalidation: system-prompt hash change, model upgrade, manual by prefix/tag
-- [ ] 3.3 Threshold tuner endpoint (hit rate vs accuracy tradeoff visualization)
-- [ ] 3.4 Adaptive thresholds by request type (classification vs creative)
+- [x] 3.2 Invalidation: system-prompt hash change, model upgrade, manual by prefix/tag
+- [x] 3.3 Threshold tuner endpoint (hit rate vs accuracy tradeoff visualization)
+- [x] 3.4 Adaptive thresholds by request type (classification vs creative)
 
 ### Phase 4 — Monitoring & Analytics (Day 8–10)
 
@@ -66,7 +66,7 @@ requirements.txt
 src/cache/          embed, lookup, store, redis_store
 src/proxy/          app, schemas, streaming
 src/providers/      OpenAI adapter, router, fakes
-src/policies/       TTL tiers, invalidation (Phase 3)
+src/policies/       TTL, invalidation, threshold tuner, adaptive thresholds
 tests/              unit + proxy integration tests
 ```
 
@@ -80,4 +80,4 @@ tests/              unit + proxy integration tests
 
 ## Session Notes
 
-Phase 3.1 done (TTL tier classifier + tiered cache expiry). Next: Phase 3.2 invalidation.
+Phase 3 complete (TTL tiers, invalidation, threshold tuner, adaptive thresholds). Next: Phase 4 Prometheus metrics.
