@@ -83,7 +83,3 @@ prometheus/         scrape config
 | 2026-07-28 | Folder = `project-7-semantic-cache` | Matches monorepo naming + guide #7             |
 | 2026-07-28 | Vector store = Redis + RedisVL      | Guide default; sub-ms lookups, docker-friendly |
 | 2026-08-19 | Dev default = in-memory cache store | Fast local/tests; Redis wired in Phase 5       |
-
-## Session Notes
-
-Phase 6 complete. Review fixes: single-embed lookup, streaming hits return JSON, load-test paraphrase mix, Redis key/hit-count, eviction metric, honest case-study numbers. Anthropic/Ollama remain 501 stubs. Say **push** when you want this on GitHub.
